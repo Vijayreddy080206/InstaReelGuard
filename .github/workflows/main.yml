@@ -1,4 +1,4 @@
-name: Build InstaReelGuard v5 APK
+name: Build InstaReelGuard v6 APK
 on: [push, workflow_dispatch]
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build Signed v5.0 APK
+      - name: Build Signed v6.0 APK
         run: |
           set -e
           export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
@@ -31,7 +31,7 @@ jobs:
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/values
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/xml
 
-          # Decode fixed RSA-2048 keystore so v5.0 installs directly over v2/v3/v4 without uninstalling!
+          # Decode fixed RSA-2048 keystore so v6.0 installs directly over v2/v3/v4/v5 without uninstalling!
           echo "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" | base64 -d > /tmp/InstaReelGuard/app/release-key.jks
 
           cat << 'EOF' > /tmp/InstaReelGuard/settings.gradle.kts
@@ -79,8 +79,8 @@ jobs:
                   applicationId = "com.instaguard.reelblocker"
                   minSdk = 26
                   targetSdk = 34
-                  versionCode = 6
-                  versionName = "5.0.0"
+                  versionCode = 7
+                  versionName = "6.0.0"
               }
 
               signingConfigs {
@@ -181,14 +181,14 @@ jobs:
           <resources>
               <string name="app_name">InstaReelGuard</string>
               <string name="accessibility_service_label">InstaReelGuard Blocker</string>
-              <string name="accessibility_service_description">Transforms Instagram into a pure messaging app: auto-redirects to DMs on launch, instantly locks a touch-blocking black shield over the Explore grid at 0ms while keeping the Search with Meta AI bar visible, allows single shared Reels in DMs, and enforces a 15-minute session limit.</string>
+              <string name="accessibility_service_description">Transforms Instagram into a pure messaging app: auto-redirects to DMs on launch, locks a black shield over the Explore grid at 0ms (automatically hiding when you tap the Search bar or pull down the Notification shade), allows single shared Reels in DMs, and enforces a 15-minute session limit.</string>
           </resources>
           EOF
 
           cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/res/xml/accessibility_service_config.xml
           <?xml version="1.0" encoding="utf-8"?>
           <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewScrolled|typeViewSelected|typeViewFocused"
+              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewScrolled|typeViewSelected|typeViewFocused|typeWindowsChanged"
               android:accessibilityFeedbackType="feedbackGeneric"
               android:accessibilityFlags="flagReportViewIds|flagIncludeNotImportantViews|flagRetrieveInteractiveWindows"
               android:canRetrieveWindowContent="true"
@@ -214,7 +214,7 @@ jobs:
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="InstaReelGuard v5.0"
+                      android:text="InstaReelGuard v6.0"
                       android:textColor="#FFFFFF"
                       android:textSize="28sp"
                       android:textStyle="bold" />
@@ -223,7 +223,7 @@ jobs:
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="4dp"
-                      android:text="Pure Messaging Edition • Calibrated for 2026 UI"
+                      android:text="Pure Messaging Edition • Final Calibrated Release"
                       android:textColor="#9AA4B2"
                       android:textSize="14sp" />
 
@@ -286,7 +286,7 @@ jobs:
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="14dp"
-                          android:text="• Instant DM-Only Launch: Clicks the bottom/top DM icon the exact second you open Instagram."
+                          android:text="• Instant DM-Only Launch: Clicks the DM icon the exact second you open Instagram."
                           android:textColor="#E2E8F0"
                           android:textSize="14sp" />
 
@@ -294,7 +294,7 @@ jobs:
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="12dp"
-                          android:text="• 0ms Explore Blackout Shield: Covers the Explore grid from the very first frame (ignoring the 'Search with Meta AI' placeholder) and blocks all scrolling."
+                          android:text="• Smart Explore Blackout: Blocks the Explore grid at 0ms, and automatically hides when you tap the Search bar or pull down the Notification shade."
                           android:textColor="#E2E8F0"
                           android:textSize="14sp" />
 
@@ -368,9 +368,9 @@ jobs:
                       statusSubtitleText.text = "Tap the button below -> Downloaded Services -> InstaReelGuard Blocker -> Turn ON."
                       openSettingsButton.text = "Enable in Accessibility Settings"
                   } else {
-                      statusBadgeText.text = "LOCKED ON • v5.0 ACTIVE"
+                      statusBadgeText.text = "LOCKED ON • v6.0 ACTIVE"
                       statusBadgeText.setTextColor(Color.parseColor("#6DD58C"))
-                      statusSubtitleText.text = "0ms Explore Blackout • Instant DM Launch • 15-Min Cap"
+                      statusSubtitleText.text = "Smart Search & Notification Auto-Hide • Instant DM Launch"
                       openSettingsButton.text = "Accessibility Settings"
                   }
               }
@@ -416,20 +416,22 @@ jobs:
           import java.util.ArrayDeque
 
           /**
-           * InstaReelGuard v5.0 — Calibrated from iQOO Z10 Screenshots (1000099377.jpg & 1000099378.jpg).
+           * InstaReelGuard v6.0 — Calibrated from 1000099429.jpg (Search Screen) & 1000099430.jpg (Notification Shade).
            *
-           * Key Fixes in v5.0:
-           * 1. "Search with Meta AI" Placeholder Fix:
-           *    In 2026 Instagram, the Explore search bar contains the text "Search with Meta AI".
-           *    v5.0 never treats placeholder text as active typing; the black shield stays locked on
-           *    at 0ms from the very first frame when you tap Explore, and only hides if the EditText
-           *    actually gains keyboard focus (`isFocused == true`) or the Search back button
-           *    (`action_bar_button_back`) is visible.
-           * 2. Bottom Navigation Bar 2026 Layout Support:
-           *    Supports both the 2026 bottom-bar DM icon (`direct_tab` in Slot 3, 40%-60% width)
-           *    and top-right DM icon, as well as Explore (`search_tab`) in Slot 4 (60%-80% width).
-           * 3. 100% Touch-Blocking Blackout Shield:
-           *    Consumes all MotionEvents so the Explore grid behind the black shield can never scroll.
+           * Keeps all working v5.0 behaviors untouched, and fixes:
+           * 1. Active Search Screen Detection (1000099429.jpg):
+           *    Immediately hides the black overlay when you tap the Search bar or are on the Search typing/results
+           *    screen, detected via 5 signals:
+           *    - Top-left Back arrow (`←` at x <= 18% width, y <= 14% height) is visible (present in 1000099429.jpg, absent in 1000099377.jpg)
+           *    - Bottom navigation bar (`tab_bar` / 5 icons) is hidden (hidden in 1000099429.jpg when typing/searching)
+           *    - On-screen Keyboard (`TYPE_INPUT_METHOD` window) is open
+           *    - Any node in top bar is focused (`isFocused`) or has typed text other than "Search with Meta AI" / "Search"
+           *    - Direct click inside the top Search bar region (`y <= 14%` height)
+           * 2. Notification Shade Pull-Down Detection (1000099430.jpg):
+           *    Distinguishes the tiny top status-bar network speed meter (`KB/s`, height <= 8% screen) from pulling
+           *    down the Notification Shade (`com.android.systemui` window or node extending below 15% of screen height,
+           *    or `TYPE_WINDOW_STATE_CHANGED` from `com.android.systemui`), immediately hiding the black overlay when
+           *    you pull down notifications and restoring it when you close the notification shade.
            */
           class ReelBlockerAccessibilityService : AccessibilityService() {
 
@@ -445,7 +447,7 @@ jobs:
                   private const val ID_CREATION_TAB = "com.instagram.android:id/creation_tab"
                   private const val ID_TAB_BAR = "com.instagram.android:id/tab_bar"
 
-                  // Direct / Messenger Button IDs (Bottom Bar & Top-Right Action Bar)
+                  // Direct / Messenger Button IDs
                   private val DM_BUTTON_IDS = arrayOf(
                       "com.instagram.android:id/direct_tab",
                       "com.instagram.android:id/action_bar_inbox_button",
@@ -472,17 +474,17 @@ jobs:
                       "com.instagram.android:id/action_bar_wrapper"
                   )
 
-                  // Explore-only top search bar IDs
                   private val EXPLORE_ONLY_SEARCH_BOX_IDS = arrayOf(
                       "com.instagram.android:id/action_bar_search_edit_text",
                       "com.instagram.android:id/search_row"
                   )
 
-                  // Indicators that the user actually tapped into the Search input screen (has Back arrow)
+                  // Dedicated Search Input Screen IDs
                   private val SEARCH_INPUT_SCREEN_IDS = arrayOf(
                       "com.instagram.android:id/action_bar_button_back",
                       "com.instagram.android:id/search_recycler_view",
-                      "com.instagram.android:id/tabbed_landing_tab_header"
+                      "com.instagram.android:id/tabbed_landing_tab_header",
+                      "com.instagram.android:id/clear_button"
                   )
 
                   // Full-Screen Reel Viewer (ClipsViewer) IDs
@@ -522,15 +524,12 @@ jobs:
                       "carousel"
                   )
 
-                  private val IGNORED_SYSTEM_PACKAGES = listOf(
-                      "com.android.systemui",
+                  private val KEYBOARD_PACKAGES = listOf(
                       "inputmethod",
                       "keyboard",
                       "gboard",
                       "honeyboard",
-                      "ims",
-                      "permissioncontroller",
-                      "volume"
+                      "ims"
                   )
 
                   // Timings
@@ -564,6 +563,8 @@ jobs:
               private var exploreOverlayParams: WindowManager.LayoutParams? = null
               private var isExploreOverlayAdded: Boolean = false
               private var exploreModeLockedOn: Boolean = false
+              private var inSearchSubscreen: Boolean = false
+              private var notificationShadeExpanded: Boolean = false
               private var lastOverlayTopY: Int = -1
               private var lastOverlayHeight: Int = -1
 
@@ -575,7 +576,6 @@ jobs:
               private var initialPagerIndex: Int = -1
 
               private var lastAllowedDmReelTapAtMs: Long = 0L
-              private var searchTypingActiveUntilMs: Long = 0L
 
               private var pendingClickDmInbox: Boolean = false
               private var pendingClickDmDeadlineMs: Long = 0L
@@ -629,7 +629,8 @@ jobs:
                               AccessibilityEvent.TYPE_VIEW_CLICKED or
                               AccessibilityEvent.TYPE_VIEW_SCROLLED or
                               AccessibilityEvent.TYPE_VIEW_SELECTED or
-                              AccessibilityEvent.TYPE_VIEW_FOCUSED
+                              AccessibilityEvent.TYPE_VIEW_FOCUSED or
+                              AccessibilityEvent.TYPE_WINDOWS_CHANGED
                       feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
                       flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or
                               AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS or
@@ -640,19 +641,43 @@ jobs:
 
               override fun onAccessibilityEvent(event: AccessibilityEvent?) {
                   if (event == null) return
-                  val pkg = event.packageName?.toString() ?: return
 
-                  // 1. Ignore our own overlay and status-bar/keyboard packages
+                  // 0. If Notification Shade or Keyboard window changed via TYPE_WINDOWS_CHANGED, check immediately
+                  if (event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+                      if (isExploreOverlayAdded) {
+                          if (isNotificationShadeOrKeyboardCoveringScreen()) {
+                              hideExploreBlackoutOverlay()
+                              return
+                          }
+                      }
+                  }
+
+                  val pkg = event.packageName?.toString() ?: return
+                  val lowerPkg = pkg.lowercase()
+
+                  // 1. Handle SystemUI (Notification Shade vs tiny top Status Bar network speed meter)
+                  if (pkg == "com.android.systemui") {
+                      handleSystemUiEvent(event)
+                      return
+                  }
+
+                  // 2. If Keyboard package emits an event, user is typing in Search -> hide black overlay!
+                  if (KEYBOARD_PACKAGES.any { lowerPkg.contains(it) }) {
+                      if (exploreModeLockedOn) {
+                          inSearchSubscreen = true
+                          hideExploreBlackoutOverlay()
+                      }
+                      return
+                  }
+
+                  // 3. Other non-Instagram packages
                   if (pkg != INSTAGRAM_PACKAGE) {
                       if (pkg == packageName) return
-                      val lowerPkg = pkg.lowercase()
-                      if (IGNORED_SYSTEM_PACKAGES.any { lowerPkg.contains(it) }) {
-                          return
-                      }
                       if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
                           if (!isInstagramWindowCurrentlyOnScreen()) {
                               wasInstagramInForeground = false
                               exploreModeLockedOn = false
+                              inSearchSubscreen = false
                               hideExploreBlackoutOverlay()
                               pendingClickDmInbox = false
                               mainHandler.removeCallbacks(dmClickRetryRunnable)
@@ -661,19 +686,30 @@ jobs:
                       return
                   }
 
+                  // Instagram event arrived: check if notification shade is still covering screen
+                  if (notificationShadeExpanded) {
+                      if (isNotificationShadeExpandedViaWindows()) {
+                          hideExploreBlackoutOverlay()
+                          return
+                      } else {
+                          notificationShadeExpanded = false
+                      }
+                  }
+
                   val now = SystemClock.elapsedRealtime()
                   val justEnteredInstagram = !wasInstagramInForeground
                   wasInstagramInForeground = true
 
-                  // 2. Check 15-Minute Active Usage Timer
+                  // 4. Check 15-Minute Active Usage Timer
                   if (checkAndEnforceFifteenMinuteLimit(now)) {
                       wasInstagramInForeground = false
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                       return
                   }
 
-                  // 3. Handle Click, Selection & Focus Events FIRST at 0ms latency!
+                  // 5. Handle Click, Selection & Focus Events FIRST at 0ms latency!
                   val eventType = event.eventType
                   if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED ||
                       eventType == AccessibilityEvent.TYPE_VIEW_SELECTED ||
@@ -684,7 +720,7 @@ jobs:
                       }
                   }
 
-                  // 4. If user just opened Instagram, immediately arm the 5-second DM redirect loop!
+                  // 6. If user just opened Instagram, immediately arm the 5-second DM redirect loop!
                   if (justEnteredInstagram && !exploreModeLockedOn) {
                       val root = getInstagramRootWindow()
                       if (root == null || (!hasAnyVisibleNode(root, DM_SCREEN_IDS) && !isBottomTabSelected(root, ID_DIRECT_TAB))) {
@@ -692,11 +728,12 @@ jobs:
                       }
                   }
 
-                  // 5. Handle Scroll Events inside DM Single-Reel Player
+                  // 7. Handle Scroll Events inside DM Single-Reel Player
                   if (eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
-                      // If on Explore page, ensure black shield stays locked on even if a scroll event fired
                       if (exploreModeLockedOn) {
-                          showOrUpdateExploreBlackoutOverlay(getInstagramRootWindow())
+                          if (!inSearchSubscreen && !notificationShadeExpanded) {
+                              showOrUpdateExploreBlackoutOverlay(getInstagramRootWindow())
+                          }
                           return
                       }
                       if (inSingleReelSession) {
@@ -711,7 +748,7 @@ jobs:
                       }
                   }
 
-                  // 6. Throttle high-frequency content events when not transitioning
+                  // 8. Throttle high-frequency content events when not transitioning
                   if (eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
                       if (inSingleReelSession && !pendingClickDmInbox && (now - lastContentCheckAtMs < 350L)) {
                           return
@@ -722,6 +759,80 @@ jobs:
 
                   val root = getInstagramRootWindow() ?: return
                   evaluateScreenState(root, now)
+              }
+
+              /**
+               * Distinguishes pulling down the Notification Shade (1000099430.jpg) from the tiny
+               * top status bar network speed meter (`3.90 KB/s`).
+               * - If Notification Shade is pulled down -> hides the Explore Blackout Overlay immediately!
+               * - If it's just the tiny status bar (`y <= 8%` height) -> ignores it so the Explore overlay never flickers!
+               */
+              private fun handleSystemUiEvent(event: AccessibilityEvent) {
+                  if (!exploreModeLockedOn && !isExploreOverlayAdded) return
+
+                  val screenHeight = resources.displayMetrics.heightPixels
+                  val maxStatusBarY = (screenHeight * 0.09).toInt()
+
+                  // 1. If SystemUI opened a full window state (Notification Shade or Quick Settings)
+                  if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                      notificationShadeExpanded = true
+                      hideExploreBlackoutOverlay()
+                      return
+                  }
+
+                  // 2. Check if the SystemUI event source extends below the top status bar strip (y > 9% of screen)
+                  val src = event.source
+                  if (src != null) {
+                      val rect = Rect()
+                      src.getBoundsInScreen(rect)
+                      if (rect.bottom > maxStatusBarY) {
+                          notificationShadeExpanded = true
+                          hideExploreBlackoutOverlay()
+                          return
+                      }
+                  }
+
+                  // 3. Check if any System window in getWindows() is expanded (> 15% of screen height)
+                  if (isNotificationShadeExpandedViaWindows()) {
+                      notificationShadeExpanded = true
+                      hideExploreBlackoutOverlay()
+                  }
+              }
+
+              private fun isNotificationShadeExpandedViaWindows(): Boolean {
+                  try {
+                      val screenHeight = resources.displayMetrics.heightPixels
+                      val thresholdHeight = (screenHeight * 0.18).toInt()
+                      val rect = Rect()
+                      val winList = windows ?: return false
+                      for (win in winList) {
+                          if (win.type == AccessibilityWindowInfo.TYPE_SYSTEM) {
+                              win.getBoundsInScreen(rect)
+                              if (rect.height() > thresholdHeight) {
+                                  return true
+                              }
+                          }
+                      }
+                  } catch (_: Throwable) {
+                  }
+                  return false
+              }
+
+              private fun isKeyboardWindowOpen(): Boolean {
+                  try {
+                      val winList = windows ?: return false
+                      for (win in winList) {
+                          if (win.type == AccessibilityWindowInfo.TYPE_INPUT_METHOD) {
+                              return true
+                          }
+                      }
+                  } catch (_: Throwable) {
+                  }
+                  return false
+              }
+
+              private fun isNotificationShadeOrKeyboardCoveringScreen(): Boolean {
+                  return isNotificationShadeExpandedViaWindows() || isKeyboardWindowOpen()
               }
 
               private fun getInstagramRootWindow(): AccessibilityNodeInfo? {
@@ -766,6 +877,7 @@ jobs:
                       lastTimerCloseAtMs = now
                       resetSingleReelSession()
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                       Toast.makeText(
                           applicationContext,
@@ -780,8 +892,6 @@ jobs:
 
               /**
                * 0ms handler for bottom navigation bar clicks and top Search bar clicks.
-               * Calibrated directly to the 2026 Instagram layout in 1000099377.jpg:
-               * Slot 1 (0-20%): Home | Slot 2 (20-40%): Reels | Slot 3 (40-60%): DMs | Slot 4 (60-80%): Explore | Slot 5 (80-100%): Profile
                */
               private fun handleDirectTabAndSearchClicks(event: AccessibilityEvent, now: Long): Boolean {
                   val src = event.source ?: return false
@@ -796,9 +906,35 @@ jobs:
                   val isBottomBarArea = rect.top >= (screenHeight * 0.85).toInt()
                   val centerX = rect.centerX()
 
-                  // A. Did the user tap the Explore / Search tab on the bottom bar?
-                  // Matches ID_EXPLORE_TAB ("search_tab"), description ("Search and explore"),
-                  // OR Slot 4 (60%-80% width in 2026 layout) when not Profile/Reels/Home/Direct.
+                  // A. Did the user tap the top-left Back arrow (`←` in 1000099429.jpg) while in Search subscreen?
+                  // Returning from Search subscreen back to the Explore grid!
+                  if (inSearchSubscreen &&
+                      event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED &&
+                      rect.bottom in 1..(screenHeight * 0.14).toInt() &&
+                      rect.right <= (screenWidth * 0.18).toInt()
+                  ) {
+                      inSearchSubscreen = false
+                      showOrUpdateExploreBlackoutOverlay(getInstagramRootWindow())
+                      return true
+                  }
+
+                  // B. Did the user tap the Top Search Bar ("Search with Meta AI") while on Explore?
+                  // Immediately hide the black screen and lock inSearchSubscreen = true!
+                  val isTopSearchBarTap = rect.bottom in 1..(screenHeight * 0.14).toInt() &&
+                          rect.left > (screenWidth * 0.12).toInt()
+
+                  if ((exploreModeLockedOn || lastOrigin == ScreenOrigin.EXPLORE_PAGE) &&
+                      (viewId.contains("search", ignoreCase = true) ||
+                       className.contains("EditText", ignoreCase = true) ||
+                       (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED && isTopSearchBarTap) ||
+                       (event.eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED && rect.bottom in 1..(screenHeight * 0.16).toInt()))
+                  ) {
+                      inSearchSubscreen = true
+                      hideExploreBlackoutOverlay()
+                      return true
+                  }
+
+                  // C. Did the user tap the Explore / Search tab on the bottom bar (Slot 4)?
                   val isExploreSlot4Tap = isBottomBarArea &&
                           (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED ||
                            event.eventType == AccessibilityEvent.TYPE_VIEW_SELECTED) &&
@@ -814,7 +950,8 @@ jobs:
                   ) {
                       lastOrigin = ScreenOrigin.EXPLORE_PAGE
                       exploreModeLockedOn = true
-                      searchTypingActiveUntilMs = 0L
+                      inSearchSubscreen = false
+                      notificationShadeExpanded = false
                       pendingClickDmInbox = false
                       mainHandler.removeCallbacks(dmClickRetryRunnable)
                       resetSingleReelSession()
@@ -823,19 +960,20 @@ jobs:
                       return true
                   }
 
-                  // B. Did the user tap the Reels tab (Slot 2) OR Home tab (Slot 1) on the bottom bar? -> Redirect straight to DMs!
+                  // D. Did the user tap the Reels tab (Slot 2) OR Home tab (Slot 1) on the bottom bar? -> Redirect straight to DMs!
                   if (viewId == ID_REELS_TAB || viewId == ID_HOME_TAB ||
                       (isBottomBarArea && (contentDesc.equals("Reels", ignoreCase = true) ||
                                            contentDesc.equals("Home", ignoreCase = true) ||
                                            contentDesc.equals("Feed", ignoreCase = true)))
                   ) {
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                       armPersistentDmRedirect(now)
                       return true
                   }
 
-                  // C. Did the user tap the DM tab (Slot 3) or Profile tab (Slot 5)? -> Hide Explore overlay
+                  // E. Did the user tap the DM tab (Slot 3) or Profile tab (Slot 5)? -> Hide Explore overlay
                   if (viewId == ID_DIRECT_TAB || viewId == ID_PROFILE_TAB || viewId == ID_CREATION_TAB ||
                       (isBottomBarArea && (contentDesc.contains("Direct", ignoreCase = true) ||
                                            contentDesc.contains("Message", ignoreCase = true) ||
@@ -843,6 +981,7 @@ jobs:
                                            contentDesc.contains("Create", ignoreCase = true)))
                   ) {
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                       if (viewId == ID_DIRECT_TAB || contentDesc.contains("Direct", ignoreCase = true) || contentDesc.contains("Message", ignoreCase = true)) {
                           lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
@@ -850,19 +989,7 @@ jobs:
                       return false
                   }
 
-                  // D. Did the user physically click on the Top "Search with Meta AI" Bar while on Explore?
-                  if (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED &&
-                      (viewId.contains("action_bar_search_edit_text") ||
-                       viewId.contains("search_row") ||
-                       className.contains("EditText", ignoreCase = true) ||
-                       (exploreModeLockedOn && rect.bottom in 1..(screenHeight * 0.12).toInt()))
-                  ) {
-                      searchTypingActiveUntilMs = now + 2500L
-                      hideExploreBlackoutOverlay()
-                      return false
-                  }
-
-                  // E. Did the user tap a shared Reel inside a DM chat?
+                  // F. Did the user tap a shared Reel inside a DM chat?
                   if (lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX &&
                       event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED &&
                       rect.bottom < (screenHeight * 0.88).toInt()
@@ -877,6 +1004,12 @@ jobs:
                * Evaluates the active Instagram screen state.
                */
               private fun evaluateScreenState(root: AccessibilityNodeInfo, now: Long) {
+                  if (isNotificationShadeExpandedViaWindows()) {
+                      notificationShadeExpanded = true
+                      hideExploreBlackoutOverlay()
+                      return
+                  }
+
                   val screenHeight = resources.displayMetrics.heightPixels
                   val isClipsFullscreen = isFullscreenClipsViewerVisible(root, screenHeight)
                   val isReelsTabSelected = isBottomTabSelected(root, ID_REELS_TAB)
@@ -889,7 +1022,6 @@ jobs:
                           (isExploreSearchBarVisible && !isDmScreenVisible)
 
                   // 1. PRIORITY CHECK: User is on the Explore / Search Tab!
-                  // Show the Blackout Shield immediately at 0ms before anything else!
                   if ((isExploreTabSelected || exploreModeLockedOn) &&
                       !isClipsFullscreen && !isHomeTabSelected && !isReelsTabSelected && !isProfileTabSelected && !isDirectTabSelected
                   ) {
@@ -899,9 +1031,11 @@ jobs:
                       exploreModeLockedOn = true
                       resetSingleReelSession()
 
-                      if (isUserActivelyTypingInSearch(root, now)) {
+                      if (isUserOnActiveSearchScreen(root)) {
+                          inSearchSubscreen = true
                           hideExploreBlackoutOverlay()
                       } else {
+                          inSearchSubscreen = false
                           showOrUpdateExploreBlackoutOverlay(root)
                       }
                       return
@@ -913,6 +1047,7 @@ jobs:
                           if (isDmScreenVisible) {
                               pendingClickDmInbox = false
                               exploreModeLockedOn = false
+                              inSearchSubscreen = false
                               hideExploreBlackoutOverlay()
                               lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                               return
@@ -920,6 +1055,7 @@ jobs:
                           if (tryClickDmButtonComprehensive(root)) {
                               pendingClickDmInbox = false
                               exploreModeLockedOn = false
+                              inSearchSubscreen = false
                               hideExploreBlackoutOverlay()
                               lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                               return
@@ -933,6 +1069,7 @@ jobs:
                   if (isDmScreenVisible && !isClipsFullscreen) {
                       pendingClickDmInbox = false
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                       lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                       resetSingleReelSession()
@@ -941,12 +1078,14 @@ jobs:
 
                   if (isHomeTabSelected || isReelsTabSelected || isProfileTabSelected || isDirectTabSelected) {
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
                   }
 
                   // 4. Full-Screen Reel Viewer (ClipsViewer) is visible
                   if (isClipsFullscreen) {
                       exploreModeLockedOn = false
+                      inSearchSubscreen = false
                       hideExploreBlackoutOverlay()
 
                       val recentlyTappedInDm = (now - lastAllowedDmReelTapAtMs) <= ALLOWED_TAP_WINDOW_MS
@@ -987,34 +1126,94 @@ jobs:
               }
 
               /**
-               * Checks ONLY if the user has actually tapped into the Search box (keyboard focused
-               * or on the dedicated Search sub-screen with the top-left Back arrow).
-               * NEVER triggers on placeholder text like "Search with Meta AI"!
+               * Accurately detects when the user clicked the Search bar and is on the Search screen (1000099429.jpg)
+               * vs the main Explore Grid (1000099377.jpg), using 5 independent checks:
+               * 1. On-screen keyboard (`TYPE_INPUT_METHOD`) is open.
+               * 2. Dedicated Search Input IDs (`action_bar_button_back`, `clear_button`, `search_recycler_view`) are visible.
+               * 3. The 5-icon Bottom Navigation Bar (`tab_bar` / `search_tab` / `feed_tab`) is hidden (as seen in 1000099429.jpg!).
+               * 4. A top-left Back arrow (`←` at x <= 18% width, y <= 14% height) is visible in the top bar.
+               * 5. Any node in the top Search bar is focused (`isFocused`) or has typed text (like "hai") that is
+               *    NOT the default "Search with Meta AI" / "Search" placeholder.
                */
-              private fun isUserActivelyTypingInSearch(root: AccessibilityNodeInfo, now: Long): Boolean {
-                  if (now < searchTypingActiveUntilMs) return true
+              private fun isUserOnActiveSearchScreen(root: AccessibilityNodeInfo): Boolean {
+                  // Check 1: Is the keyboard open on screen?
+                  if (isKeyboardWindowOpen()) return true
 
-                  // 1. Check if the Search EditText currently has active keyboard focus
-                  val searchNodes = root.findAccessibilityNodeInfosByViewId("com.instagram.android:id/action_bar_search_edit_text")
-                  if (searchNodes != null) {
-                      for (node in searchNodes) {
-                          if (node.isVisibleToUser && node.isFocused) {
-                              return true
+                  // Check 2: Are known Search sub-screen IDs visible?
+                  if (hasAnyVisibleNode(root, SEARCH_INPUT_SCREEN_IDS)) return true
+
+                  // Check 3: On the main Explore grid (1000099377.jpg), the bottom navigation bar is visible.
+                  // When you tap the Search bar (1000099429.jpg), Instagram hides the bottom navigation bar!
+                  val bottomBarVisible = hasAnyVisibleNode(
+                      root,
+                      arrayOf(ID_TAB_BAR, ID_EXPLORE_TAB, ID_HOME_TAB, ID_REELS_TAB, ID_DIRECT_TAB, ID_PROFILE_TAB)
+                  )
+                  if (!bottomBarVisible) return true
+
+                  // Check 4 & 5: Inspect top bar nodes (y <= 14% of screen height)
+                  val metrics = resources.displayMetrics
+                  val screenWidth = metrics.widthPixels
+                  val screenHeight = metrics.heightPixels
+                  val maxTopBarY = (screenHeight * 0.14).toInt()
+                  val maxBackArrowRightX = (screenWidth * 0.18).toInt()
+                  val rect = Rect()
+
+                  val queue = ArrayDeque<AccessibilityNodeInfo>(50)
+                  queue.add(root)
+                  var visited = 0
+
+                  while (queue.isNotEmpty() && visited < 50) {
+                      val node = queue.removeFirst()
+                      visited++
+
+                      if (node.isVisibleToUser) {
+                          if (node.isFocused) return true
+
+                          node.getBoundsInScreen(rect)
+                          if (rect.bottom in 1..maxTopBarY) {
+                              val desc = node.contentDescription?.toString()?.trim() ?: ""
+                              val txt = node.text?.toString()?.trim() ?: ""
+                              val cls = node.className?.toString() ?: ""
+
+                              // Check 4: Top-left Back arrow (`←` in 1000099429.jpg)
+                              if (rect.right in 1..maxBackArrowRightX &&
+                                  (node.isClickable || desc.contains("Back", ignoreCase = true) || desc.contains("Navigate up", ignoreCase = true))
+                              ) {
+                                  return true
+                              }
+
+                              // Check 5: Typed text inside the search bar (e.g. "hai" in 1000099429.jpg)
+                              if (txt.isNotEmpty() &&
+                                  !txt.contains("Search with Meta AI", ignoreCase = true) &&
+                                  !txt.contains("Ask Meta AI", ignoreCase = true) &&
+                                  !txt.equals("Search", ignoreCase = true)
+                              ) {
+                                  return true
+                              }
+
+                              // Also if an EditText is visible and empty (user just tapped Search bar before typing)
+                              if (cls.contains("EditText", ignoreCase = true) && txt.isEmpty()) {
+                                  return true
+                              }
                           }
+                      }
+
+                      val count = node.childCount
+                      for (i in 0 until count) {
+                          if (visited + queue.size >= 50) break
+                          val child = node.getChild(i)
+                          if (child != null) queue.add(child)
                       }
                   }
 
-                  // 2. Check if the dedicated Search results screen (with top-left Back button) is open
-                  if (hasAnyVisibleNode(root, SEARCH_INPUT_SCREEN_IDS)) {
-                      return true
-                  }
-                  return false
+                  return inSearchSubscreen
               }
 
               private fun armPersistentDmRedirect(now: Long, rootNode: AccessibilityNodeInfo? = null) {
                   resetSingleReelSession()
                   lastAllowedDmReelTapAtMs = 0L
                   exploreModeLockedOn = false
+                  inSearchSubscreen = false
                   hideExploreBlackoutOverlay()
 
                   val root = rootNode ?: getInstagramRootWindow()
@@ -1033,13 +1232,7 @@ jobs:
                   mainHandler.postDelayed(dmClickRetryRunnable, 90L)
               }
 
-              /**
-               * Finds and clicks the DM / Messenger button in EITHER:
-               * - The 2026 Bottom Navigation Bar (`direct_tab` / Slot 3 paper airplane icon in 1000099377.jpg), OR
-               * - The Top-Right Action Bar (`action_bar_inbox_button`).
-               */
               private fun tryClickDmButtonComprehensive(root: AccessibilityNodeInfo): Boolean {
-                  // Layer 1: Direct View ID lookup (direct_tab in bottom bar or action_bar_inbox_button in top bar)
                   for (id in DM_BUTTON_IDS) {
                       val nodes = root.findAccessibilityNodeInfosByViewId(id) ?: continue
                       for (node in nodes) {
@@ -1049,7 +1242,6 @@ jobs:
                       }
                   }
 
-                  // Layer 2: Scan both Bottom Bar and Top-Right Bar for Direct/Messenger/Message button
                   val metrics = resources.displayMetrics
                   val screenWidth = metrics.widthPixels
                   val screenHeight = metrics.heightPixels
@@ -1094,7 +1286,6 @@ jobs:
                       }
                   }
 
-                  // Layer 3: In the 2026 5-tab bottom bar (1000099377.jpg), Slot 3 (center tab in tab_bar) is DMs!
                   val tabBarNodes = root.findAccessibilityNodeInfosByViewId(ID_TAB_BAR)
                   val tabBar = tabBarNodes?.firstOrNull { it.isVisibleToUser }
                   if (tabBar != null && tabBar.childCount >= 5) {
@@ -1110,13 +1301,13 @@ jobs:
                   return false
               }
 
-              /**
-               * Places a solid, touch-absorbing pure black (#000000) shield over the middle Explore grid.
-               * Calibrated to 1000099377.jpg: starts right below the "Search with Meta AI" bar (~10.3% height)
-               * and ends right at the top of the bottom navigation bar (~92.2% height).
-               */
               @SuppressLint("ClickableViewAccessibility")
               private fun showOrUpdateExploreBlackoutOverlay(root: AccessibilityNodeInfo?) {
+                  if (inSearchSubscreen || notificationShadeExpanded) {
+                      hideExploreBlackoutOverlay()
+                      return
+                  }
+
                   val wm = windowManager ?: return
                   val metrics = resources.displayMetrics
                   val screenHeight = metrics.heightPixels
@@ -1153,7 +1344,6 @@ jobs:
                       }
                   }
 
-                  // Exact fallback calibrated from 1000099377.jpg (Search bar ends at 10.1%, Bottom bar starts at 92.2%)
                   if (topEdgeY <= 0) {
                       topEdgeY = if (lastOverlayTopY > 0) lastOverlayTopY else (screenHeight * 0.103).toInt()
                   }
@@ -1417,6 +1607,8 @@ jobs:
               override fun onInterrupt() {
                   wasInstagramInForeground = false
                   exploreModeLockedOn = false
+                  inSearchSubscreen = false
+                  notificationShadeExpanded = false
                   hideExploreBlackoutOverlay()
                   resetSingleReelSession()
                   pendingClickDmInbox = false
@@ -1427,6 +1619,8 @@ jobs:
                   isServiceCurrentlyRunning = false
                   wasInstagramInForeground = false
                   exploreModeLockedOn = false
+                  inSearchSubscreen = false
+                  notificationShadeExpanded = false
                   hideExploreBlackoutOverlay()
                   resetSingleReelSession()
                   pendingClickDmInbox = false
@@ -1439,8 +1633,8 @@ jobs:
           cd /tmp/InstaReelGuard
           gradle assembleRelease --no-daemon
 
-      - name: Upload Ready-to-Install v5.0 APK
+      - name: Upload Ready-to-Install v6.0 APK
         uses: actions/upload-artifact@v4
         with:
-          name: InstaReelGuard-v5-APK
+          name: InstaReelGuard-v6-APK
           path: /tmp/InstaReelGuard/app/build/outputs/apk/release/app-release.apk
