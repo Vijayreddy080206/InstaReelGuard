@@ -5,40 +5,957 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Set up Gradle 8.6
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.6'
-
-      - name: Unzip and Build APK
+      - name: Generate Project and Build APK
         run: |
-          shopt -s nullglob
-          for z in *.zip; do
-            unzip -o "$z"
-          done
-          SETTINGS_FILE=$(find . -name "settings.gradle.kts" | head -n 1)
-          if [ -z "$SETTINGS_FILE" ]; then
-            echo "ERROR: InstaReelGuard_Android_Project.zip was not found in the repository!"
-            ls -la
-            exit 1
-          fi
-          cd "$(dirname "$SETTINGS_FILE")"
+          set -e
+          export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+
+          # Download Gradle 8.6 directly
+          curl -sL https://services.gradle.org/distributions/gradle-8.6-bin.zip -o /tmp/gradle.zip
+          unzip -q -o /tmp/gradle.zip -d /tmp
+          export PATH="/tmp/gradle-8.6/bin:$PATH"
+
+          # Create self-contained Android project directory
+          rm -rf /tmp/InstaReelGuard
+          mkdir -p /tmp/InstaReelGuard/app/src/main/java/com/instaguard/reelblocker
+          mkdir -p /tmp/InstaReelGuard/app/src/main/res/layout
+          mkdir -p /tmp/InstaReelGuard/app/src/main/res/values
+          mkdir -p /tmp/InstaReelGuard/app/src/main/res/xml
+
+          cat << 'EOF' > /tmp/InstaReelGuard/settings.gradle.kts
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "InstaReelGuard"
+          include(":app")
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/build.gradle.kts
+          plugins {
+              id("com.android.application") version "8.3.2" apply false
+              id("org.jetbrains.kotlin.android") version "1.9.23" apply false
+          }
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/gradle.properties
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          kotlin.code.style=official
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/build.gradle.kts
+          plugins {
+              id("com.android.application")
+              id("org.jetbrains.kotlin.android")
+          }
+
+          android {
+              namespace = "com.instaguard.reelblocker"
+              compileSdk = 34
+
+              defaultConfig {
+                  applicationId = "com.instaguard.reelblocker"
+                  minSdk = 26
+                  targetSdk = 34
+                  versionCode = 1
+                  versionName = "1.0.0"
+              }
+
+              buildTypes {
+                  release {
+                      isMinifyEnabled = false
+                      signingConfig = signingConfigs.getByName("debug")
+                  }
+                  debug {
+                      isMinifyEnabled = false
+                  }
+              }
+
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+
+              kotlinOptions {
+                  jvmTarget = "17"
+              }
+          }
+
+          dependencies {
+          }
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/AndroidManifest.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+              <application
+                  android:allowBackup="false"
+                  android:label="@string/app_name"
+                  android:supportsRtl="true"
+                  android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:launchMode="singleTop">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+
+                  <service
+                      android:name=".ReelBlockerAccessibilityService"
+                      android:exported="false"
+                      android:label="@string/accessibility_service_label"
+                      android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+                      <intent-filter>
+                          <action android:name="android.accessibilityservice.AccessibilityService" />
+                      </intent-filter>
+                      <meta-data
+                          android:name="android.accessibilityservice"
+                          android:resource="@xml/accessibility_service_config" />
+                  </service>
+
+              </application>
+
+          </manifest>
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/res/values/strings.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <resources>
+              <string name="app_name">InstaReelGuard</string>
+              <string name="accessibility_service_label">InstaReelGuard Blocker</string>
+              <string name="accessibility_service_description">Blocks the Instagram Reels tab (redirecting to DMs) and allows watching individual Reels tapped from DMs or the Home feed while blocking scrolling to a second Reel. Runs 100% offline with zero internet permissions.</string>
+          </resources>
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/res/xml/accessibility_service_config.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewScrolled|typeViewSelected"
+              android:accessibilityFeedbackType="feedbackGeneric"
+              android:accessibilityFlags="flagReportViewIds|flagIncludeNotImportantViews|flagRetrieveInteractiveWindows"
+              android:canRetrieveWindowContent="true"
+              android:description="@string/accessibility_service_description"
+              android:notificationTimeout="70"
+              android:packageNames="com.instagram.android"
+              android:settingsActivity="com.instaguard.reelblocker.MainActivity" />
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/res/layout/activity_main.xml
+          <?xml version="1.0" encoding="utf-8"?>
+          <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#0F141A"
+              android:fillViewport="true">
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="24dp">
+
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="InstaReelGuard"
+                      android:textColor="#FFFFFF"
+                      android:textSize="28sp"
+                      android:textStyle="bold" />
+
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="4dp"
+                      android:text="Zero-Telemetry Local Instagram Reel Blocker"
+                      android:textColor="#9AA4B2"
+                      android:textSize="14sp" />
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:background="#1A222C"
+                      android:orientation="vertical"
+                      android:padding="20dp">
+
+                      <TextView
+                          android:id="@+id/tv_service_status_badge"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="CHECKING STATUS..."
+                          android:textColor="#6DD58C"
+                          android:textSize="15sp"
+                          android:textStyle="bold" />
+
+                      <TextView
+                          android:id="@+id/tv_service_status_subtitle"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="6dp"
+                          android:text="100% Local On-Device Engine • Zero Internet Permission"
+                          android:textColor="#CBD5E1"
+                          android:textSize="13sp" />
+
+                      <Button
+                          android:id="@+id/btn_open_accessibility_settings"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="16dp"
+                          android:background="#2563EB"
+                          android:padding="12dp"
+                          android:text="Enable in Accessibility Settings"
+                          android:textAllCaps="false"
+                          android:textColor="#FFFFFF"
+                          android:textSize="15sp" />
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:background="#1A222C"
+                      android:orientation="vertical"
+                      android:padding="20dp">
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="Protection Rules"
+                          android:textColor="#FFFFFF"
+                          android:textSize="17sp"
+                          android:textStyle="bold" />
+
+                      <Switch
+                          android:id="@+id/switch_master_enabled"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="16dp"
+                          android:checked="true"
+                          android:text="Master Reel Blocker Enabled"
+                          android:textColor="#F8FAFC"
+                          android:textSize="15sp" />
+
+                      <Switch
+                          android:id="@+id/switch_redirect_reels_to_dm"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="18dp"
+                          android:checked="true"
+                          android:text="Reels Button -> Redirect to DMs"
+                          android:textColor="#F8FAFC"
+                          android:textSize="15sp" />
+
+                      <Switch
+                          android:id="@+id/switch_allow_single_dm_reel"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="18dp"
+                          android:checked="true"
+                          android:text="DMs: Watch Shared Reel, Block 2nd Scroll"
+                          android:textColor="#F8FAFC"
+                          android:textSize="15sp" />
+
+                      <Switch
+                          android:id="@+id/switch_allow_single_home_reel"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="18dp"
+                          android:checked="true"
+                          android:text="Home Page: Watch Opened Reel, Block 2nd Scroll"
+                          android:textColor="#F8FAFC"
+                          android:textSize="15sp" />
+                  </LinearLayout>
+              </LinearLayout>
+          </ScrollView>
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/java/com/instaguard/reelblocker/MainActivity.kt
+          package com.instaguard.reelblocker
+
+          import android.accessibilityservice.AccessibilityServiceInfo
+          import android.app.Activity
+          import android.content.Context
+          import android.content.Intent
+          import android.content.SharedPreferences
+          import android.graphics.Color
+          import android.os.Bundle
+          import android.provider.Settings
+          import android.view.accessibility.AccessibilityManager
+          import android.widget.Button
+          import android.widget.Switch
+          import android.widget.TextView
+
+          class MainActivity : Activity() {
+
+              private lateinit var prefs: SharedPreferences
+              private lateinit var statusBadgeText: TextView
+              private lateinit var statusSubtitleText: TextView
+              private lateinit var openSettingsButton: Button
+
+              private lateinit var switchMasterEnabled: Switch
+              private lateinit var switchRedirectReelsToDm: Switch
+              private lateinit var switchAllowSingleDmReel: Switch
+              private lateinit var switchAllowSingleHomeReel: Switch
+
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  setContentView(R.layout.activity_main)
+
+                  prefs = getSharedPreferences(ReelBlockerAccessibilityService.PREFS_NAME, Context.MODE_PRIVATE)
+
+                  statusBadgeText = findViewById(R.id.tv_service_status_badge)
+                  statusSubtitleText = findViewById(R.id.tv_service_status_subtitle)
+                  openSettingsButton = findViewById(R.id.btn_open_accessibility_settings)
+
+                  switchMasterEnabled = findViewById(R.id.switch_master_enabled)
+                  switchRedirectReelsToDm = findViewById(R.id.switch_redirect_reels_to_dm)
+                  switchAllowSingleDmReel = findViewById(R.id.switch_allow_single_dm_reel)
+                  switchAllowSingleHomeReel = findViewById(R.id.switch_allow_single_home_reel)
+
+                  switchMasterEnabled.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, true)
+                  switchRedirectReelsToDm.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_REDIRECT_REELS_TAB_TO_DM, true)
+                  switchAllowSingleDmReel.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_DM_REEL, true)
+                  switchAllowSingleHomeReel.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_HOME_REEL, true)
+
+                  switchMasterEnabled.setOnCheckedChangeListener { _, isChecked ->
+                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, isChecked).apply()
+                      refreshServiceStatusUi()
+                  }
+                  switchRedirectReelsToDm.setOnCheckedChangeListener { _, isChecked ->
+                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_REDIRECT_REELS_TAB_TO_DM, isChecked).apply()
+                  }
+                  switchAllowSingleDmReel.setOnCheckedChangeListener { _, isChecked ->
+                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_DM_REEL, isChecked).apply()
+                  }
+                  switchAllowSingleHomeReel.setOnCheckedChangeListener { _, isChecked ->
+                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_HOME_REEL, isChecked).apply()
+                  }
+
+                  openSettingsButton.setOnClickListener {
+                      val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
+                          flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                      }
+                      startActivity(intent)
+                  }
+              }
+
+              override fun onResume() {
+                  super.onResume()
+                  refreshServiceStatusUi()
+              }
+
+              private fun refreshServiceStatusUi() {
+                  val serviceEnabled = isAccessibilityServiceEnabled()
+                  val masterOn = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, true)
+
+                  when {
+                      !serviceEnabled -> {
+                          statusBadgeText.text = "ACTION REQUIRED: SERVICE OFF"
+                          statusBadgeText.setTextColor(Color.parseColor("#FFB4AB"))
+                          statusSubtitleText.text = "Tap the button below -> Installed Apps -> InstaReelGuard -> Turn ON."
+                          openSettingsButton.text = "Enable in Accessibility Settings"
+                      }
+                      !masterOn -> {
+                          statusBadgeText.text = "PAUSED BY USER"
+                          statusBadgeText.setTextColor(Color.parseColor("#FFD580"))
+                          statusSubtitleText.text = "Accessibility Service is connected, but Master Protection is switched off."
+                          openSettingsButton.text = "Manage Accessibility Settings"
+                      }
+                      else -> {
+                          statusBadgeText.text = "ACTIVE & PROTECTING INSTAGRAM"
+                          statusBadgeText.setTextColor(Color.parseColor("#6DD58C"))
+                          statusSubtitleText.text = "100% Local On-Device Engine • Zero Internet Permission • Zero Data Leaks"
+                          openSettingsButton.text = "Open Accessibility Settings"
+                      }
+                  }
+              }
+
+              private fun isAccessibilityServiceEnabled(): Boolean {
+                  if (ReelBlockerAccessibilityService.isServiceCurrentlyRunning) return true
+                  val am = getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager ?: return false
+                  val enabledServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
+                  val expectedComponent = "$packageName/${ReelBlockerAccessibilityService::class.java.name}"
+                  val expectedShortComponent = "$packageName/.${ReelBlockerAccessibilityService::class.java.simpleName}"
+                  return enabledServices.any { info ->
+                      val id = info.id ?: ""
+                      id.equals(expectedComponent, ignoreCase = true) || id.equals(expectedShortComponent, ignoreCase = true)
+                  }
+              }
+          }
+          EOF
+
+          cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/java/com/instaguard/reelblocker/ReelBlockerAccessibilityService.kt
+          package com.instaguard.reelblocker
+
+          import android.accessibilityservice.AccessibilityService
+          import android.accessibilityservice.AccessibilityServiceInfo
+          import android.content.Context
+          import android.content.SharedPreferences
+          import android.graphics.Rect
+          import android.os.Build
+          import android.os.Handler
+          import android.os.Looper
+          import android.os.SystemClock
+          import android.view.accessibility.AccessibilityEvent
+          import android.view.accessibility.AccessibilityNodeInfo
+          import java.util.ArrayDeque
+
+          class ReelBlockerAccessibilityService : AccessibilityService() {
+
+              companion object {
+                  private const val INSTAGRAM_PACKAGE = "com.instagram.android"
+
+                  const val PREFS_NAME = "instaguard_prefs"
+                  const val KEY_MASTER_ENABLED = "master_enabled"
+                  const val KEY_REDIRECT_REELS_TAB_TO_DM = "redirect_reels_tab_to_dm"
+                  const val KEY_ALLOW_SINGLE_DM_REEL = "allow_single_dm_reel"
+                  const val KEY_ALLOW_SINGLE_HOME_REEL = "allow_single_home_reel"
+
+                  private val REELS_TAB_IDS = setOf("com.instagram.android:id/clips_tab")
+                  private val HOME_TAB_IDS = setOf("com.instagram.android:id/feed_tab")
+                  private val DM_BUTTON_IDS = setOf(
+                      "com.instagram.android:id/action_bar_inbox_button",
+                      "com.instagram.android:id/direct_tab",
+                      "com.instagram.android:id/action_bar_wrapper_inbox_button"
+                  )
+                  private val DM_SCREEN_INDICATOR_IDS = setOf(
+                      "com.instagram.android:id/row_thread_composer_edittext",
+                      "com.instagram.android:id/row_thread_composer_button_send",
+                      "com.instagram.android:id/direct_thread_content_below_action_bar",
+                      "com.instagram.android:id/message_list",
+                      "com.instagram.android:id/thread_list_recyclerview",
+                      "com.instagram.android:id/direct_inbox_recycler_view"
+                  )
+                  private val CLIPS_FULLSCREEN_PAGER_IDS = setOf(
+                      "com.instagram.android:id/clips_viewer_view_pager",
+                      "com.instagram.android:id/clips_viewer_root"
+                  )
+                  private val STORY_VIEWER_IDS = setOf(
+                      "com.instagram.android:id/reel_viewer_root",
+                      "com.instagram.android:id/reel_viewer_image_view",
+                      "com.instagram.android:id/story_viewer_container"
+                  )
+                  private val SAFE_SCROLL_CONTAINER_HINTS = listOf(
+                      "comment",
+                      "message_list",
+                      "thread_list",
+                      "direct_inbox",
+                      "tray_recycler_view",
+                      "bottom_sheet",
+                      "share_sheet"
+                  )
+
+                  private const val EVENT_THROTTLE_MS = 85L
+                  private const val ACTION_COOLDOWN_MS = 550L
+                  private const val INITIAL_REEL_SETTLE_GRACE_MS = 450L
+                  private const val ALLOWED_TAP_WINDOW_MS = 2800L
+                  private const val DM_REDIRECT_TIMEOUT_MS = 1600L
+                  private const val MAX_BFS_NODES = 90
+
+                  @Volatile
+                  var isServiceCurrentlyRunning: Boolean = false
+                      private set
+              }
+
+              private enum class ScreenOrigin {
+                  HOME_FEED,
+                  DM_CHAT_OR_INBOX,
+                  OTHER
+              }
+
+              private lateinit var prefs: SharedPreferences
+              private val mainHandler = Handler(Looper.getMainLooper())
+
+              private var lastOrigin: ScreenOrigin = ScreenOrigin.HOME_FEED
+              private var inSingleReelSession: Boolean = false
+              private var singleReelOpenedAtMs: Long = 0L
+              private var initialReelSignature: String? = null
+              private var initialPagerIndex: Int = -1
+
+              private var lastAllowedContentTapAtMs: Long = 0L
+              private var lastAllowedTapOrigin: ScreenOrigin = ScreenOrigin.HOME_FEED
+
+              private var pendingClickDmInbox: Boolean = false
+              private var pendingClickDmDeadlineMs: Long = 0L
+
+              private var lastContentCheckAtMs: Long = 0L
+              private var lastBlockActionAtMs: Long = 0L
+
+              private val dmClickRetryRunnable = Runnable {
+                  val now = SystemClock.elapsedRealtime()
+                  if (pendingClickDmInbox && now < pendingClickDmDeadlineMs) {
+                      val root = rootInActiveWindow ?: return@Runnable
+                      if (tryClickDmButton(root)) {
+                          pendingClickDmInbox = false
+                          lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
+                      }
+                  } else {
+                      pendingClickDmInbox = false
+                  }
+              }
+
+              override fun onServiceConnected() {
+                  super.onServiceConnected()
+                  isServiceCurrentlyRunning = true
+                  prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+                  serviceInfo = serviceInfo.apply {
+                      packageNames = arrayOf(INSTAGRAM_PACKAGE)
+                      eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or
+                              AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
+                              AccessibilityEvent.TYPE_VIEW_CLICKED or
+                              AccessibilityEvent.TYPE_VIEW_SCROLLED or
+                              AccessibilityEvent.TYPE_VIEW_SELECTED
+                      feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
+                      flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or
+                              AccessibilityServiceInfo.FLAG_INCLUDE_NOT_IMPORTANT_VIEWS or
+                              AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+                      notificationTimeout = 70L
+                  }
+              }
+
+              override fun onAccessibilityEvent(event: AccessibilityEvent?) {
+                  if (event == null) return
+                  val pkg = event.packageName?.toString() ?: return
+                  if (pkg != INSTAGRAM_PACKAGE) return
+                  if (!prefs.getBoolean(KEY_MASTER_ENABLED, true)) return
+
+                  val now = SystemClock.elapsedRealtime()
+
+                  if (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED ||
+                      event.eventType == AccessibilityEvent.TYPE_VIEW_SELECTED
+                  ) {
+                      if (isEventSourceReelsBottomTab(event)) {
+                          handleReelsTabBlocked(now)
+                          return
+                      } else if (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                          recordContentTapIfInAllowedOrigin(event, now)
+                      }
+                  }
+
+                  if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED && inSingleReelSession) {
+                      handleScrollDuringSingleReelSession(event, now)
+                  }
+
+                  if (event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
+                      if (now - lastContentCheckAtMs < EVENT_THROTTLE_MS) return
+                      lastContentCheckAtMs = now
+                  }
+
+                  val root = rootInActiveWindow ?: return
+                  evaluateScreenState(root, now)
+              }
+
+              private fun recordContentTapIfInAllowedOrigin(event: AccessibilityEvent, now: Long) {
+                  if (lastOrigin != ScreenOrigin.DM_CHAT_OR_INBOX && lastOrigin != ScreenOrigin.HOME_FEED) {
+                      return
+                  }
+                  val src = event.source ?: return
+                  val rect = Rect()
+                  src.getBoundsInScreen(rect)
+                  val screenHeight = resources.displayMetrics.heightPixels
+
+                  if (rect.bottom < (screenHeight * 0.88).toInt()) {
+                      lastAllowedContentTapAtMs = now
+                      lastAllowedTapOrigin = lastOrigin
+                      lastBlockActionAtMs = 0L
+                  }
+              }
+
+              private fun evaluateScreenState(root: AccessibilityNodeInfo, now: Long) {
+                  val snapshot = inspectWindowHierarchy(root)
+
+                  if (pendingClickDmInbox) {
+                      if (now < pendingClickDmDeadlineMs) {
+                          if (snapshot.dmButtonNode != null && clickNodeOrParent(snapshot.dmButtonNode)) {
+                              pendingClickDmInbox = false
+                              resetSingleReelSession()
+                              lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
+                              return
+                          }
+                      } else {
+                          pendingClickDmInbox = false
+                      }
+                  }
+
+                  if (snapshot.isStoryViewerVisible) return
+
+                  if (snapshot.isDmScreenVisible && !snapshot.isClipsViewerVisible) {
+                      lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
+                      resetSingleReelSession()
+                      return
+                  }
+
+                  if (snapshot.isClipsViewerVisible) {
+                      val allowDmReel = prefs.getBoolean(KEY_ALLOW_SINGLE_DM_REEL, true)
+                      val allowHomeReel = prefs.getBoolean(KEY_ALLOW_SINGLE_HOME_REEL, true)
+
+                      val recentlyTappedFromAllowedOrigin = (now - lastAllowedContentTapAtMs) <= ALLOWED_TAP_WINDOW_MS
+                      val effectiveOrigin = if (recentlyTappedFromAllowedOrigin) lastAllowedTapOrigin else lastOrigin
+
+                      val isAllowedSingleReelOrigin =
+                          (effectiveOrigin == ScreenOrigin.DM_CHAT_OR_INBOX && allowDmReel) ||
+                          (effectiveOrigin == ScreenOrigin.HOME_FEED && allowHomeReel)
+
+                      if (snapshot.isReelsTabSelected && !inSingleReelSession && !recentlyTappedFromAllowedOrigin) {
+                          handleReelsTabBlocked(now, snapshot)
+                          return
+                      }
+
+                      if (!isAllowedSingleReelOrigin) {
+                          triggerBackAction(now)
+                          return
+                      }
+
+                      if (!inSingleReelSession) {
+                          inSingleReelSession = true
+                          singleReelOpenedAtMs = now
+                          initialReelSignature = snapshot.currentReelSignature
+                          initialPagerIndex = -1
+                      } else {
+                          if (now - singleReelOpenedAtMs > INITIAL_REEL_SETTLE_GRACE_MS) {
+                              val oldSig = initialReelSignature
+                              val newSig = snapshot.currentReelSignature
+                              if (oldSig == null && newSig != null) {
+                                  initialReelSignature = newSig
+                              } else if (oldSig != null && newSig != null && oldSig != newSig &&
+                                  !snapshot.isCommentOrShareSheetOpen
+                              ) {
+                                  resetSingleReelSession()
+                                  triggerBackAction(now)
+                                  return
+                              }
+                          }
+                      }
+                      return
+                  }
+
+                  if (snapshot.isReelsTabSelected && !inSingleReelSession) {
+                      handleReelsTabBlocked(now, snapshot)
+                      return
+                  }
+
+                  if (snapshot.isHomeTabSelected && !snapshot.isClipsViewerVisible) {
+                      lastOrigin = ScreenOrigin.HOME_FEED
+                      resetSingleReelSession()
+                      return
+                  }
+
+                  if (!snapshot.isClipsViewerVisible) {
+                      lastOrigin = ScreenOrigin.OTHER
+                      resetSingleReelSession()
+                  }
+              }
+
+              private fun handleScrollDuringSingleReelSession(event: AccessibilityEvent, now: Long) {
+                  val elapsedSinceOpen = now - singleReelOpenedAtMs
+                  val sourceNode = event.source
+                  val viewId = sourceNode?.viewIdResourceName?.lowercase() ?: ""
+                  val className = event.className?.toString()?.lowercase() ?: ""
+
+                  if (SAFE_SCROLL_CONTAINER_HINTS.any { viewId.contains(it) }) return
+
+                  val isClipsPagerScroll = viewId.contains("clips_viewer") ||
+                          viewId.contains("view_pager") ||
+                          className.contains("viewpager") ||
+                          className.contains("recyclerview")
+
+                  if (!isClipsPagerScroll) return
+
+                  val currentIndex = event.fromIndex
+
+                  if (elapsedSinceOpen <= INITIAL_REEL_SETTLE_GRACE_MS) {
+                      if (initialPagerIndex == -1 && currentIndex >= 0) {
+                          initialPagerIndex = currentIndex
+                      }
+                      return
+                  }
+
+                  if (initialPagerIndex == -1 && currentIndex >= 0) {
+                      initialPagerIndex = currentIndex
+                  }
+
+                  val indexAdvanced = (initialPagerIndex >= 0 && currentIndex >= 0 && currentIndex != initialPagerIndex) ||
+                          (currentIndex >= 1)
+
+                  val scrolledVertically = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                      event.scrollDeltaY > 55
+                  } else {
+                      event.scrollY > 0
+                  }
+
+                  if (indexAdvanced || scrolledVertically) {
+                      val root = rootInActiveWindow
+                      if (root != null) {
+                          val snap = inspectWindowHierarchy(root)
+                          if (snap.isCommentOrShareSheetOpen) return
+                      }
+                      resetSingleReelSession()
+                      triggerBackAction(now)
+                  }
+              }
+
+              private fun handleReelsTabBlocked(now: Long, snapshot: WindowSnapshot? = null) {
+                  if (now - lastBlockActionAtMs < ACTION_COOLDOWN_MS) return
+                  lastBlockActionAtMs = now
+                  resetSingleReelSession()
+                  lastAllowedContentTapAtMs = 0L
+
+                  val redirectToDm = prefs.getBoolean(KEY_REDIRECT_REELS_TAB_TO_DM, true)
+                  val root = rootInActiveWindow
+
+                  if (redirectToDm && root != null) {
+                      val snap = snapshot ?: inspectWindowHierarchy(root)
+
+                      if (snap.dmButtonNode != null && clickNodeOrParent(snap.dmButtonNode)) {
+                          pendingClickDmInbox = false
+                          lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
+                          return
+                      }
+
+                      if (snap.homeTabNode != null && clickNodeOrParent(snap.homeTabNode)) {
+                          pendingClickDmInbox = true
+                          pendingClickDmDeadlineMs = now + DM_REDIRECT_TIMEOUT_MS
+                          mainHandler.removeCallbacks(dmClickRetryRunnable)
+                          mainHandler.postDelayed(dmClickRetryRunnable, 160L)
+                          mainHandler.postDelayed(dmClickRetryRunnable, 340L)
+                          return
+                      }
+                  }
+
+                  performGlobalAction(GLOBAL_ACTION_BACK)
+              }
+
+              private fun triggerBackAction(now: Long) {
+                  if (now - lastBlockActionAtMs < ACTION_COOLDOWN_MS) return
+                  lastBlockActionAtMs = now
+                  lastAllowedContentTapAtMs = 0L
+                  performGlobalAction(GLOBAL_ACTION_BACK)
+              }
+
+              private fun resetSingleReelSession() {
+                  inSingleReelSession = false
+                  singleReelOpenedAtMs = 0L
+                  initialReelSignature = null
+                  initialPagerIndex = -1
+              }
+
+              private fun isEventSourceReelsBottomTab(event: AccessibilityEvent): Boolean {
+                  val src = event.source ?: return false
+                  val id = src.viewIdResourceName ?: ""
+                  if (id in REELS_TAB_IDS) return true
+
+                  val desc = src.contentDescription?.toString()?.trim() ?: ""
+                  if (desc.equals("Reels", ignoreCase = true)) {
+                      val bounds = Rect()
+                      src.getBoundsInScreen(bounds)
+                      val displayHeight = resources.displayMetrics.heightPixels
+                      if (bounds.top >= (displayHeight * 0.80).toInt()) {
+                          return true
+                      }
+                  }
+                  return false
+              }
+
+              private fun tryClickDmButton(root: AccessibilityNodeInfo): Boolean {
+                  val snap = inspectWindowHierarchy(root)
+                  return snap.dmButtonNode != null && clickNodeOrParent(snap.dmButtonNode)
+              }
+
+              private fun clickNodeOrParent(node: AccessibilityNodeInfo): Boolean {
+                  var current: AccessibilityNodeInfo? = node
+                  var depth = 0
+                  while (current != null && depth < 4) {
+                      if (current.isClickable) {
+                          return current.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                      }
+                      current = current.parent
+                      depth++
+                  }
+                  return false
+              }
+
+              private class WindowSnapshot(
+                  val isReelsTabSelected: Boolean,
+                  val isHomeTabSelected: Boolean,
+                  val isDmScreenVisible: Boolean,
+                  val isClipsViewerVisible: Boolean,
+                  val isStoryViewerVisible: Boolean,
+                  val isCommentOrShareSheetOpen: Boolean,
+                  val homeTabNode: AccessibilityNodeInfo?,
+                  val dmButtonNode: AccessibilityNodeInfo?,
+                  val currentReelSignature: String?
+              )
+
+              private fun inspectWindowHierarchy(root: AccessibilityNodeInfo): WindowSnapshot {
+                  var isReelsTabSelected = false
+                  var isHomeTabSelected = false
+                  var isDmScreenVisible = false
+                  var isClipsViewerVisible = false
+                  var isStoryViewerVisible = false
+                  var isCommentOrShareSheetOpen = false
+                  var homeTabNode: AccessibilityNodeInfo? = null
+                  var dmButtonNode: AccessibilityNodeInfo? = null
+                  var reelAuthorOrCaption: String? = null
+
+                  val screenHeight = resources.displayMetrics.heightPixels
+                  val screenWidth = resources.displayMetrics.widthPixels
+                  val rect = Rect()
+
+                  val queue = ArrayDeque<AccessibilityNodeInfo>(MAX_BFS_NODES)
+                  queue.add(root)
+                  var visited = 0
+
+                  while (queue.isNotEmpty() && visited < MAX_BFS_NODES) {
+                      val node = queue.removeFirst()
+                      visited++
+
+                      val viewId = node.viewIdResourceName ?: ""
+                      val contentDesc = node.contentDescription?.toString()?.trim() ?: ""
+                      val text = node.text?.toString()?.trim() ?: ""
+
+                      if (viewId in STORY_VIEWER_IDS && node.isVisibleToUser) {
+                          isStoryViewerVisible = true
+                      }
+
+                      if (viewId in REELS_TAB_IDS ||
+                          (contentDesc.equals("Reels", ignoreCase = true) && isBottomBarPosition(node, rect, screenHeight))
+                      ) {
+                          if (node.isSelected) isReelsTabSelected = true
+                      }
+
+                      if (viewId in HOME_TAB_IDS ||
+                          (contentDesc.equals("Home", ignoreCase = true) && isBottomBarPosition(node, rect, screenHeight))
+                      ) {
+                          if (homeTabNode == null) homeTabNode = node
+                          if (node.isSelected) isHomeTabSelected = true
+                      }
+
+                      if (viewId in DM_BUTTON_IDS ||
+                          (isTopRightPosition(node, rect, screenWidth, screenHeight) &&
+                                  (contentDesc.contains("Direct", ignoreCase = true) ||
+                                   contentDesc.contains("Messenger", ignoreCase = true) ||
+                                   contentDesc.contains("message", ignoreCase = true)))
+                      ) {
+                          if (dmButtonNode == null && node.isVisibleToUser) dmButtonNode = node
+                      }
+
+                      if (node.isVisibleToUser &&
+                          (viewId in DM_SCREEN_INDICATOR_IDS ||
+                           viewId.contains("direct_thread", ignoreCase = true) ||
+                           viewId.contains("row_thread_composer", ignoreCase = true))
+                      ) {
+                          isDmScreenVisible = true
+                      }
+
+                      if (node.isVisibleToUser &&
+                          (viewId in CLIPS_FULLSCREEN_PAGER_IDS || viewId.contains("clips_viewer_view_pager"))
+                      ) {
+                          node.getBoundsInScreen(rect)
+                          if (rect.height() >= (screenHeight * 0.72).toInt()) {
+                              isClipsViewerVisible = true
+                          }
+                      }
+
+                      if (reelAuthorOrCaption == null && node.isVisibleToUser) {
+                          if (viewId.contains("clips_author_username") ||
+                              viewId.contains("clips_author_info") ||
+                              viewId.contains("clips_caption") ||
+                              contentDesc.startsWith("Reel by ", ignoreCase = true)
+                          ) {
+                              val sig = if (text.isNotEmpty()) text else contentDesc
+                              if (sig.isNotEmpty()) reelAuthorOrCaption = sig
+                          }
+                      }
+
+                      if (node.isVisibleToUser &&
+                          (viewId.contains("comment_list") ||
+                           viewId.contains("layout_comment_thread") ||
+                           viewId.contains("direct_share_sheet"))
+                      ) {
+                          isCommentOrShareSheetOpen = true
+                      }
+
+                      val childCount = node.childCount
+                      for (i in 0 until childCount) {
+                          if (visited + queue.size >= MAX_BFS_NODES) break
+                          val child = node.getChild(i)
+                          if (child != null) queue.add(child)
+                      }
+                  }
+
+                  return WindowSnapshot(
+                      isReelsTabSelected = isReelsTabSelected,
+                      isHomeTabSelected = isHomeTabSelected,
+                      isDmScreenVisible = isDmScreenVisible,
+                      isClipsViewerVisible = isClipsViewerVisible,
+                      isStoryViewerVisible = isStoryViewerVisible,
+                      isCommentOrShareSheetOpen = isCommentOrShareSheetOpen,
+                      homeTabNode = homeTabNode,
+                      dmButtonNode = dmButtonNode,
+                      currentReelSignature = reelAuthorOrCaption
+                  )
+              }
+
+              private fun isBottomBarPosition(node: AccessibilityNodeInfo, rect: Rect, screenHeight: Int): Boolean {
+                  node.getBoundsInScreen(rect)
+                  return rect.top >= (screenHeight * 0.80).toInt()
+              }
+
+              private fun isTopRightPosition(
+                  node: AccessibilityNodeInfo,
+                  rect: Rect,
+                  screenWidth: Int,
+                  screenHeight: Int
+              ): Boolean {
+                  node.getBoundsInScreen(rect)
+                  return rect.bottom <= (screenHeight * 0.18).toInt() && rect.left >= (screenWidth * 0.65).toInt()
+              }
+
+              override fun onInterrupt() {
+                  resetSingleReelSession()
+                  pendingClickDmInbox = false
+                  mainHandler.removeCallbacks(dmClickRetryRunnable)
+              }
+
+              override fun onDestroy() {
+                  isServiceCurrentlyRunning = false
+                  resetSingleReelSession()
+                  pendingClickDmInbox = false
+                  mainHandler.removeCallbacksAndMessages(null)
+                  super.onDestroy()
+              }
+          }
+          EOF
+
+          cd /tmp/InstaReelGuard
           gradle assembleRelease --no-daemon
 
       - name: Upload Ready-to-Install APK
         uses: actions/upload-artifact@v4
         with:
           name: InstaReelGuard-APK
-          path: '**/app-release.apk'
+          path: /tmp/InstaReelGuard/app/build/outputs/apk/release/app-release.apk
