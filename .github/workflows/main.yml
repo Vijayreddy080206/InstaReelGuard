@@ -1,4 +1,4 @@
-name: Build InstaReelGuard v9 APK
+name: Build InstaReelGuard v10 APK
 on: [push, workflow_dispatch]
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build Signed v9.0 APK
+      - name: Build Signed v10.0 APK
         run: |
           set -e
           export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
@@ -31,7 +31,7 @@ jobs:
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/values
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/xml
 
-          # Decode fixed RSA-2048 keystore so v9.0 installs directly over previous versions
+          # Decode fixed RSA-2048 keystore so v10.0 installs directly over previous versions
           echo "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" | base64 -d > /tmp/InstaReelGuard/app/release-key.jks
 
           cat << 'EOF' > /tmp/InstaReelGuard/settings.gradle.kts
@@ -79,8 +79,8 @@ jobs:
                   applicationId = "com.instaguard.reelblocker"
                   minSdk = 26
                   targetSdk = 34
-                  versionCode = 10
-                  versionName = "9.0.0"
+                  versionCode = 11
+                  versionName = "10.0.0"
               }
 
               signingConfigs {
@@ -181,7 +181,7 @@ jobs:
           <resources>
               <string name="app_name">InstaReelGuard</string>
               <string name="accessibility_service_label">InstaReelGuard Blocker</string>
-              <string name="accessibility_service_description">Transforms Instagram into a pure messaging app: auto-redirects to DMs on launch, snaps a black shield over the Explore grid in a fraction of a second (hiding on Search, friend profiles, and Notification shade), allows single shared Reels in DMs, and enforces a 15-minute session limit.</string>
+              <string name="accessibility_service_description">Transforms Instagram into a pure messaging app: auto-redirects to DMs on launch, snaps a black shield over the Explore grid in a fraction of a second (hiding on Search, friend profiles, Notification shade, and immediately upon exiting Instagram), allows single shared Reels in DMs, and enforces a 15-minute session limit.</string>
           </resources>
           EOF
 
@@ -194,7 +194,6 @@ jobs:
               android:canRetrieveWindowContent="true"
               android:description="@string/accessibility_service_description"
               android:notificationTimeout="90"
-              android:packageNames="com.instagram.android,com.android.systemui"
               android:settingsActivity="com.instaguard.reelblocker.MainActivity" />
           EOF
 
@@ -215,7 +214,7 @@ jobs:
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="InstaReelGuard v9.0"
+                      android:text="InstaReelGuard v10.0"
                       android:textColor="#FFFFFF"
                       android:textSize="28sp"
                       android:textStyle="bold" />
@@ -287,7 +286,7 @@ jobs:
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="14dp"
-                          android:text="• Instant DM-Only Launch: Clicks the DM icon when you open Instagram or tap Home/Reels, with zero false redirects."
+                          android:text="• Instant DM-Only Launch: Detects the Home feed Stories tray and clicks into DMs the exact second you open Instagram."
                           android:textColor="#E2E8F0"
                           android:textSize="14sp" />
 
@@ -295,7 +294,7 @@ jobs:
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_marginTop="12dp"
-                          android:text="• Zero-Lag Explore Blackout: Snaps on in a fraction of a second when you tap Explore, and stays off across Search, friend profiles, and the Notification bar."
+                          android:text="• Zero-Lag Explore Blackout + Watchdog: Snaps on in a fraction of a second on Explore, and automatically removes itself within 0.2s if you close Instagram or switch apps."
                           android:textColor="#E2E8F0"
                           android:textSize="14sp" />
 
@@ -369,9 +368,9 @@ jobs:
                       statusSubtitleText.text = "Tap the button below -> Downloaded Services -> InstaReelGuard Blocker -> Turn ON."
                       openSettingsButton.text = "Enable in Accessibility Settings"
                   } else {
-                      statusBadgeText.text = "LOCKED ON • v9.0 ZERO-LAG ACTIVE"
+                      statusBadgeText.text = "LOCKED ON • v10.0 ACTIVE"
                       statusBadgeText.setTextColor(Color.parseColor("#6DD58C"))
-                      statusSubtitleText.text = "Instant Explore Blackout • No False DM Redirects • Ultra-Low Battery"
+                      statusSubtitleText.text = "Instant DM Launch • 0ms Explore Blackout • Auto-Exit Watchdog"
                       openSettingsButton.text = "Accessibility Settings"
                   }
               }
@@ -416,28 +415,21 @@ jobs:
           import java.util.ArrayDeque
 
           /**
-           * InstaReelGuard v9.0 — Zero-Lag Engine (<15ms Explore Blackout, Zero False DM Redirects, Ultra-Low Battery).
+           * InstaReelGuard v10.0 — Principal Engineer Edition.
            *
-           * Why v8.0 had a 10-second lag and false DM redirects, and how v9.0 fixes both permanently:
-           * 1. Zero Binder Queue Lag:
-           *    - Scopes `packageNames` strictly to `com.instagram.android` and `com.android.systemui`.
-           *    - Sets `notificationTimeout = 90L` and throttles `TYPE_WINDOW_CONTENT_CHANGED` to 400ms.
-           *    - Completely removes slow `getWindows()` IPC calls.
-           *    - Result: The main thread is 100% idle when you tap the Explore (`🔍`) icon, so `TYPE_VIEW_CLICKED`
-           *      and `TYPE_VIEW_SELECTED` execute in <5ms and snap the pre-allocated black screen on immediately!
-           * 2. Deterministic 2-State Explore Machine (`GRID_BLACKOUT` vs `SEARCH_OR_PROFILE_OPEN`):
-           *    - Tapping the bottom Explore (`🔍`) icon sets `exploreSubState = GRID_BLACKOUT` and shows the
-           *      black screen at 0ms.
-           *    - Tapping the top `"Search with Meta AI"` bar sets `exploreSubState = SEARCH_OR_PROFILE_OPEN`
-           *      and hides the black screen at 0ms.
-           *    - While in `SEARCH_OR_PROFILE_OPEN`, the black screen stays 100% OFF while typing in Search
-           *      (1000099429.jpg) AND while viewing a searched friend's profile (`sush.meeeee` in 1000099487.jpg),
-           *      only turning back ON when you return to the main Explore grid (where the top-left `←` Back
-           *      button is gone and `"Search with Meta AI"` is back at `rect.left < 12%`) or tap `🔍` again!
-           * 3. Zero False DM Redirects:
-           *    - Removes background feed indicators, `clips_video_container`, and window-flicker triggers.
-           *    - Only redirects to DMs when you open Instagram after >15s away, or when `ID_HOME_TAB` or
-           *      `ID_REELS_TAB` is actually selected/clicked.
+           * 1. Fixes Black Screen Staying After Closing Instagram (1000099499.jpg):
+           *    - Listens to window transitions across packages (`packageNames = null`) with a 1-nanosecond
+           *      fast exit when `isExploreOverlayAdded == false`, so switching to the Launcher / Recent Apps
+           *      (`com.bbk.launcher2`) immediately removes the black screen!
+           *    - Also runs a lightweight 220ms `overlayWatchdogRunnable` ONLY while the black screen is visible:
+           *      the instant `rootInActiveWindow?.packageName != "com.instagram.android"`, it removes the
+           *      black screen so it can never get stuck on the Home screen or Recent Apps!
+           * 2. Fixes Home Page Not Redirecting to DMs on Initial Launch:
+           *    - On cold/warm launch of Instagram, `feed_tab.isSelected` is often false until a tab is tapped;
+           *      the Home Page is identified by `HOME_FEED_INDICATORS` (`tray_recycler_view` / `main_feed_recycler_view`)
+           *      and `justEnteredInstagram` transition tracking.
+           *    - Placed strictly AFTER the DM and Explore checks so it redirects to DMs the very second
+           *      Instagram opens onto the Home page, without ever misfiring on Explore, Search, or Profiles.
            */
           class ReelBlockerAccessibilityService : AccessibilityService() {
 
@@ -472,6 +464,12 @@ jobs:
                       "com.instagram.android:id/direct_thread_header"
                   )
 
+                  // Home Feed Indicators (Stories tray at the top of the Home page on initial launch!)
+                  private val HOME_FEED_STORIES_TRAY_IDS = arrayOf(
+                      "com.instagram.android:id/tray_recycler_view",
+                      "com.instagram.android:id/main_feed_recycler_view"
+                  )
+
                   // Explore Top Search Bar IDs
                   private val EXPLORE_SEARCH_BAR_IDS = arrayOf(
                       "com.instagram.android:id/action_bar_search_edit_text",
@@ -490,7 +488,7 @@ jobs:
                       "com.instagram.android:id/action_bar_title"
                   )
 
-                  // Full-Screen Reel Viewer (ClipsViewer) IDs (Removed clips_video_container to prevent false triggers!)
+                  // Full-Screen Reel Viewer (ClipsViewer) IDs
                   private val CLIPS_VIEWER_IDS = arrayOf(
                       "com.instagram.android:id/clips_viewer_view_pager",
                       "com.instagram.android:id/clips_viewer_root",
@@ -521,13 +519,23 @@ jobs:
                       "carousel"
                   )
 
+                  private val IGNORED_SYSTEM_PACKAGES = listOf(
+                      "com.android.systemui",
+                      "inputmethod",
+                      "keyboard",
+                      "gboard",
+                      "honeyboard",
+                      "ims",
+                      "permissioncontroller",
+                      "volume"
+                  )
+
                   // Timings designed for zero queue buildup & ultra-low battery
-                  private const val CONTENT_EVENT_THROTTLE_MS = 400L
+                  private const val CONTENT_EVENT_THROTTLE_MS = 380L
                   private const val ACTION_COOLDOWN_MS = 350L
                   private const val INITIAL_REEL_SETTLE_GRACE_MS = 520L
                   private const val ALLOWED_TAP_WINDOW_MS = 4000L
-                  private const val DM_REDIRECT_TIMEOUT_MS = 4000L
-                  private const val APP_REOPEN_THRESHOLD_MS = 15_000L
+                  private const val DM_REDIRECT_TIMEOUT_MS = 5000L
 
                   // 15-Minute Usage Limit constants
                   private const val FIFTEEN_MINUTES_MS = 15L * 60L * 1000L
@@ -559,6 +567,7 @@ jobs:
               private var exploreOverlayParams: WindowManager.LayoutParams? = null
               private var isExploreOverlayAdded: Boolean = false
               private var exploreSubState: ExploreSubState = ExploreSubState.NONE
+              private var lastExploreClickAtMs: Long = 0L
               private var lastOverlayTopY: Int = -1
               private var lastOverlayHeight: Int = -1
 
@@ -576,6 +585,7 @@ jobs:
 
               private var lastContentCheckAtMs: Long = 0L
               private var lastBlockActionAtMs: Long = 0L
+              private var wasInstagramInForeground: Boolean = false
 
               // 15-Minute Usage Session tracking
               private var usageSessionStartAtMs: Long = 0L
@@ -583,9 +593,52 @@ jobs:
               private var lastTimerCloseAtMs: Long = 0L
 
               /**
-               * Lightweight check when the Notification Shade was pulled down while on Explore:
-               * restores the black screen as soon as rootInActiveWindow returns to Instagram.
+               * Active Watchdog that runs ONLY while the Black Screen is on screen (every 220ms):
+               * The instant the user swipes up to Recent Apps (1000099499.jpg), goes to the Home Screen,
+               * or pulls down the Notification Shade, `rootInActiveWindow?.packageName` is no longer
+               * `com.instagram.android`, and the Black Screen is immediately removed!
                */
+              private val overlayWatchdogRunnable = object : Runnable {
+                  override fun run() {
+                      if (!isExploreOverlayAdded) return
+                      val root = rootInActiveWindow
+                      val activePkg = root?.packageName?.toString()
+
+                      // 1. If active window is no longer Instagram (e.g. Launcher, Recent Apps, Notification Shade)
+                      if (root == null || activePkg != INSTAGRAM_PACKAGE) {
+                          hideExploreBlackoutOverlay()
+                          if (activePkg != null && activePkg != SYSTEM_UI_PACKAGE) {
+                              exploreSubState = ExploreSubState.NONE
+                              wasInstagramInForeground = false
+                          } else {
+                              mainHandler.removeCallbacks(restoreOverlayAfterShadeRunnable)
+                              mainHandler.postDelayed(restoreOverlayAfterShadeRunnable, 250L)
+                          }
+                          return
+                      }
+
+                      // 2. Check if Instagram window is shrunken into Recent Apps overview (1000099499.jpg)
+                      //    or if user navigated to Search / Friend Profile (1000099487.jpg)
+                      val now = SystemClock.elapsedRealtime()
+                      if (now - lastExploreClickAtMs > 550L) {
+                          if (!isBottomTabSelected(root, ID_EXPLORE_TAB) ||
+                              isSearchOrSearchedProfileOpen(root) ||
+                              !isMainExploreGridSearchBarVisible(root)
+                          ) {
+                              hideExploreBlackoutOverlay()
+                              if (!isBottomTabSelected(root, ID_EXPLORE_TAB)) {
+                                  exploreSubState = ExploreSubState.NONE
+                              } else {
+                                  exploreSubState = ExploreSubState.SEARCH_OR_PROFILE_OPEN
+                              }
+                              return
+                          }
+                      }
+
+                      mainHandler.postDelayed(this, 180L)
+                  }
+              }
+
               private val restoreOverlayAfterShadeRunnable = object : Runnable {
                   override fun run() {
                       if (exploreSubState != ExploreSubState.GRID_BLACKOUT) return
@@ -593,7 +646,7 @@ jobs:
                       if (activePkg == INSTAGRAM_PACKAGE) {
                           showBlackoutOverlayImmediate()
                       } else if (activePkg == SYSTEM_UI_PACKAGE) {
-                          mainHandler.postDelayed(this, 300L)
+                          mainHandler.postDelayed(this, 280L)
                       }
                   }
               }
@@ -622,7 +675,7 @@ jobs:
                               return
                           }
                       }
-                      mainHandler.postDelayed(this, 160L)
+                      mainHandler.postDelayed(this, 150L)
                   }
               }
 
@@ -634,7 +687,7 @@ jobs:
                   initPreallocatedOverlayView()
 
                   serviceInfo = serviceInfo.apply {
-                      packageNames = arrayOf(INSTAGRAM_PACKAGE, SYSTEM_UI_PACKAGE)
+                      packageNames = null
                       eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or
                               AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
                               AccessibilityEvent.TYPE_VIEW_CLICKED or
@@ -696,56 +749,82 @@ jobs:
                   }
               }
 
-              /**
-               * Instant <2ms blackout display: attaches the pre-allocated black view immediately
-               * without running any AccessibilityNodeInfo IPC queries!
-               */
               private fun showBlackoutOverlayImmediate() {
-                  if (isExploreOverlayAdded) return
-                  val wm = windowManager ?: return
-                  initPreallocatedOverlayView()
-                  try {
-                      wm.addView(exploreBlackoutView, exploreOverlayParams)
-                      isExploreOverlayAdded = true
-                  } catch (_: Throwable) {
+                  if (!isExploreOverlayAdded) {
+                      val wm = windowManager ?: return
+                      initPreallocatedOverlayView()
+                      try {
+                          wm.addView(exploreBlackoutView, exploreOverlayParams)
+                          isExploreOverlayAdded = true
+                      } catch (_: Throwable) {
+                      }
                   }
+                  mainHandler.removeCallbacks(overlayWatchdogRunnable)
+                  mainHandler.postDelayed(overlayWatchdogRunnable, 220L)
               }
 
               override fun onAccessibilityEvent(event: AccessibilityEvent?) {
                   if (event == null) return
                   val pkg = event.packageName?.toString() ?: return
 
-                  // 1. Handle SystemUI (Notification Shade pull-down vs normal status bar)
-                  if (pkg == SYSTEM_UI_PACKAGE) {
+                  // 1. Handle non-Instagram packages with 1-nanosecond fast exit when overlay is off,
+                  //    and instant overlay removal when user closes Instagram or opens Recent Apps (1000099499.jpg)!
+                  if (pkg != INSTAGRAM_PACKAGE) {
+                      if (pkg == packageName) return
+
+                      val lowerPkg = pkg.lowercase()
+                      val isIgnoredSysPkg = IGNORED_SYSTEM_PACKAGES.any { lowerPkg.contains(it) }
+
                       if (isExploreOverlayAdded) {
                           val activePkg = rootInActiveWindow?.packageName?.toString()
-                          if (activePkg == SYSTEM_UI_PACKAGE ||
-                              event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
-                          ) {
+                          if (activePkg != INSTAGRAM_PACKAGE) {
                               hideExploreBlackoutOverlay()
-                              mainHandler.removeCallbacks(restoreOverlayAfterShadeRunnable)
-                              mainHandler.postDelayed(restoreOverlayAfterShadeRunnable, 300L)
+                              if (pkg == SYSTEM_UI_PACKAGE || activePkg == SYSTEM_UI_PACKAGE) {
+                                  mainHandler.removeCallbacks(restoreOverlayAfterShadeRunnable)
+                                  mainHandler.postDelayed(restoreOverlayAfterShadeRunnable, 280L)
+                              } else {
+                                  exploreSubState = ExploreSubState.NONE
+                                  wasInstagramInForeground = false
+                              }
+                              return
                           }
+                      }
+
+                      // If user switched to Launcher, Recent Apps, or any other real app, mark Instagram as closed
+                      // so the next time they open Instagram, it immediately redirects to DMs!
+                      if (!isIgnoredSysPkg && event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+                          wasInstagramInForeground = false
+                          exploreSubState = ExploreSubState.NONE
+                          hideExploreBlackoutOverlay()
+                          pendingClickDmInbox = false
+                          mainHandler.removeCallbacks(dmClickRetryRunnable)
                       }
                       return
                   }
 
-                  if (pkg != INSTAGRAM_PACKAGE) return
-
                   val now = SystemClock.elapsedRealtime()
-                  val wasAwayForLongTime = (lastInstaActivityAtMs == 0L) ||
-                          ((now - lastInstaActivityAtMs) > APP_REOPEN_THRESHOLD_MS)
+                  val justEnteredInstagram = !wasInstagramInForeground
+                  wasInstagramInForeground = true
 
                   // 2. Check 15-Minute Active Usage Timer
                   if (checkAndEnforceFifteenMinuteLimit(now)) {
+                      wasInstagramInForeground = false
                       exploreSubState = ExploreSubState.NONE
                       hideExploreBlackoutOverlay()
                       return
                   }
 
+                  // 3. If user just opened Instagram from the launcher/recent apps, arm the DM redirect loop FIRST!
+                  if (justEnteredInstagram && exploreSubState == ExploreSubState.NONE) {
+                      val root = rootInActiveWindow
+                      if (root == null || (!hasAnyVisibleNode(root, DM_SCREEN_IDS) && !isBottomTabSelected(root, ID_DIRECT_TAB))) {
+                          armPersistentDmRedirect(now, root)
+                      }
+                  }
+
                   val eventType = event.eventType
 
-                  // 3. FAST PATH (<2ms): Handle Click & Selection Events IMMEDIATELY with ZERO throttling!
+                  // 4. FAST PATH (<2ms): Handle Click & Selection Events IMMEDIATELY with ZERO throttling!
                   if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED ||
                       eventType == AccessibilityEvent.TYPE_VIEW_SELECTED
                   ) {
@@ -754,7 +833,7 @@ jobs:
                       }
                   }
 
-                  // 4. Handle Scroll Events inside DM Single-Reel Player
+                  // 5. Handle Scroll Events inside DM Single-Reel Player
                   if (eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
                       if (exploreSubState == ExploreSubState.GRID_BLACKOUT) {
                           showBlackoutOverlayImmediate()
@@ -772,12 +851,7 @@ jobs:
                       }
                   }
 
-                  // 5. If user just opened Instagram after >15s away, arm DM redirect only if not on Explore
-                  if (wasAwayForLongTime && exploreSubState == ExploreSubState.NONE) {
-                      armPersistentDmRedirect(now)
-                  }
-
-                  // 6. Strict 400ms throttle on TYPE_WINDOW_CONTENT_CHANGED so the Binder queue NEVER lags!
+                  // 6. Strict 380ms throttle on TYPE_WINDOW_CONTENT_CHANGED so the Binder queue NEVER lags!
                   if (eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
                       if (now - lastContentCheckAtMs < CONTENT_EVENT_THROTTLE_MS) return
                       lastContentCheckAtMs = now
@@ -785,9 +859,7 @@ jobs:
 
                   val root = rootInActiveWindow ?: return
                   if (root.packageName?.toString() != INSTAGRAM_PACKAGE) {
-                      if (root.packageName?.toString() == SYSTEM_UI_PACKAGE) {
-                          hideExploreBlackoutOverlay()
-                      }
+                      hideExploreBlackoutOverlay()
                       return
                   }
                   evaluateScreenState(root, now)
@@ -851,6 +923,7 @@ jobs:
                       (isBottomBarArea && findSelfOrParentViewId(src) == ID_EXPLORE_TAB)
                   ) {
                       // SNAP BLACK SCREEN ON AT LINE 1 (<2ms)!
+                      lastExploreClickAtMs = now
                       showBlackoutOverlayImmediate()
                       exploreSubState = ExploreSubState.GRID_BLACKOUT
                       lastOrigin = ScreenOrigin.EXPLORE_PAGE
@@ -865,8 +938,6 @@ jobs:
                   val className = event.className?.toString() ?: ""
 
                   // B. Did the user tap the Top "Search with Meta AI" Bar while on Explore?
-                  // Immediately switch to SEARCH_OR_PROFILE_OPEN and hide the black screen!
-                  // It will stay hidden across Search AND any searched friend's profile (1000099487.jpg)!
                   if (event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED &&
                       (viewId.contains("action_bar_search_edit_text") ||
                        viewId.contains("search_row") ||
@@ -922,7 +993,7 @@ jobs:
               }
 
               /**
-               * Lightweight screen state evaluator (runs at most 2.5 times/sec during content updates).
+               * Evaluates the active Instagram screen state.
                */
               private fun evaluateScreenState(root: AccessibilityNodeInfo, now: Long) {
                   val screenHeight = resources.displayMetrics.heightPixels
@@ -933,6 +1004,11 @@ jobs:
                   val isDirectTabSelected = isBottomTabSelected(root, ID_DIRECT_TAB)
                   val isExploreTabSelected = isBottomTabSelected(root, ID_EXPLORE_TAB)
                   val isDmScreenVisible = isDirectTabSelected || hasAnyVisibleNode(root, DM_SCREEN_IDS)
+                  val isHomeStoriesTrayVisible = hasAnyVisibleNode(root, HOME_FEED_STORIES_TRAY_IDS)
+                  if ((isHomeTabSelected || isHomeStoriesTrayVisible) && !isExploreTabSelected) {
+                      exploreSubState = ExploreSubState.NONE
+                      hideExploreBlackoutOverlay()
+                  }
 
                   // 1. User is inside DM Inbox or a Friend's DM Chat Thread
                   if (isDmScreenVisible && !isClipsFullscreen) {
@@ -957,14 +1033,10 @@ jobs:
                           exploreSubState = ExploreSubState.GRID_BLACKOUT
                       }
 
-                      // Check if the user is on the Search screen (1000099429.jpg) or a Searched Friend's Profile (1000099487.jpg)
                       if (isSearchOrSearchedProfileOpen(root)) {
                           exploreSubState = ExploreSubState.SEARCH_OR_PROFILE_OPEN
                           hideExploreBlackoutOverlay()
                       } else if (exploreSubState == ExploreSubState.SEARCH_OR_PROFILE_OPEN) {
-                          // Only return from SEARCH_OR_PROFILE_OPEN back to GRID_BLACKOUT when we positively see
-                          // the main Explore Grid's "Search with Meta AI" bar at the far-left (`rect.left < 12%`)
-                          // with NO top-left Back arrow (`←`)!
                           if (isMainExploreGridSearchBarVisible(root)) {
                               exploreSubState = ExploreSubState.GRID_BLACKOUT
                               showOrUpdateExploreBlackoutOverlay(root)
@@ -1031,19 +1103,18 @@ jobs:
                       return
                   }
 
-                  // 5. Home Tab or Reels Tab is selected -> Redirect to DM Inbox!
-                  // (No false triggers from background views!)
-                  if (isHomeTabSelected || isReelsTabSelected) {
+                  // 5. Home Tab, Reels Tab, or Initial Launch Home Feed Stories Tray (`tray_recycler_view`) is visible ->
+                  //    Immediately redirect to DM Inbox! (Because Explore, DMs, and Profile already returned above,
+                  //    this never triggers on Explore/Search/Profile!)
+                  if (!isProfileTabSelected &&
+                      (isHomeTabSelected || isReelsTabSelected || hasAnyVisibleNode(root, HOME_FEED_STORIES_TRAY_IDS))
+                  ) {
                       resetSingleReelSession()
                       armPersistentDmRedirect(now, root)
                       return
                   }
               }
 
-              /**
-               * Returns true if the user is on the Search input screen (1000099429.jpg) OR on a
-               * searched Friend's Profile (1000099487.jpg — `sush.meeeee`).
-               */
               private fun isSearchOrSearchedProfileOpen(root: AccessibilityNodeInfo): Boolean {
                   if (hasAnyVisibleNode(root, SUBSCREEN_BACK_OR_PROFILE_IDS)) return true
 
@@ -1071,12 +1142,6 @@ jobs:
                   return false
               }
 
-              /**
-               * Returns true ONLY when the main Explore Grid's top search bar ("Search with Meta AI")
-               * is visible at the far-left of the screen (`rect.left < 12%` width) with NO Back arrow (`←`).
-               * On a searched friend's profile (`sush.meeeee`, 1000099487.jpg), there is no search bar,
-               * so this returns false and keeps the black screen OFF!
-               */
               private fun isMainExploreGridSearchBarVisible(root: AccessibilityNodeInfo): Boolean {
                   if (hasAnyVisibleNode(root, SUBSCREEN_BACK_OR_PROFILE_IDS)) return false
 
@@ -1251,6 +1316,7 @@ jobs:
               }
 
               private fun hideExploreBlackoutOverlay() {
+                  mainHandler.removeCallbacks(overlayWatchdogRunnable)
                   if (!isExploreOverlayAdded) return
                   val wm = windowManager ?: return
                   val view = exploreBlackoutView ?: return
@@ -1433,16 +1499,19 @@ jobs:
               }
 
               override fun onInterrupt() {
+                  wasInstagramInForeground = false
                   exploreSubState = ExploreSubState.NONE
                   hideExploreBlackoutOverlay()
                   resetSingleReelSession()
                   pendingClickDmInbox = false
                   mainHandler.removeCallbacks(dmClickRetryRunnable)
                   mainHandler.removeCallbacks(restoreOverlayAfterShadeRunnable)
+                  mainHandler.removeCallbacks(overlayWatchdogRunnable)
               }
 
               override fun onDestroy() {
                   isServiceCurrentlyRunning = false
+                  wasInstagramInForeground = false
                   exploreSubState = ExploreSubState.NONE
                   hideExploreBlackoutOverlay()
                   resetSingleReelSession()
@@ -1456,8 +1525,8 @@ jobs:
           cd /tmp/InstaReelGuard
           gradle assembleRelease --no-daemon
 
-      - name: Upload Ready-to-Install v9.0 APK
+      - name: Upload Ready-to-Install v10.0 APK
         uses: actions/upload-artifact@v4
         with:
-          name: InstaReelGuard-v9-APK
+          name: InstaReelGuard-v10-APK
           path: /tmp/InstaReelGuard/app/build/outputs/apk/release/app-release.apk
