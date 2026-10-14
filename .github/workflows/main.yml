@@ -1,0 +1,23 @@
+name: Build APK
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Unzip and Build APK
+        run: |
+          unzip -o InstaReelGuard_Android_Project.zip
+          cd InstaReelGuard
+          gradle wrapper --gradle-version 8.6
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
+      - uses: actions/upload-artifact@v4
+        with:
+          name: InstaReelGuard-APK
+          path: InstaReelGuard/app/build/outputs/apk/release/app-release.apk
