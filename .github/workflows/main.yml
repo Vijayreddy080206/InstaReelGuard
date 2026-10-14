@@ -1,4 +1,4 @@
-name: Build InstaReelGuard v2 APK
+name: Build InstaReelGuard v3 APK
 on: [push, workflow_dispatch]
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build Signed v2.0 APK
+      - name: Build Signed v3.0 Locked DM Edition APK
         run: |
           set -e
           export ANDROID_HOME="${ANDROID_HOME:-/usr/local/lib/android/sdk}"
@@ -31,7 +31,7 @@ jobs:
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/values
           mkdir -p /tmp/InstaReelGuard/app/src/main/res/xml
 
-          # Decode fixed RSA-2048 keystore so all future updates install directly without uninstalling
+          # Decode fixed RSA-2048 keystore so v3.0 installs directly over v2.0 without uninstalling!
           echo "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" | base64 -d > /tmp/InstaReelGuard/app/release-key.jks
 
           cat << 'EOF' > /tmp/InstaReelGuard/settings.gradle.kts
@@ -79,8 +79,8 @@ jobs:
                   applicationId = "com.instaguard.reelblocker"
                   minSdk = 26
                   targetSdk = 34
-                  versionCode = 3
-                  versionName = "2.0.0"
+                  versionCode = 4
+                  versionName = "3.0.0"
               }
 
               signingConfigs {
@@ -181,20 +181,19 @@ jobs:
           <resources>
               <string name="app_name">InstaReelGuard</string>
               <string name="accessibility_service_label">InstaReelGuard Blocker</string>
-              <string name="accessibility_service_description">Blocks Instagram Reels tab and Explore Reels (redirecting to DMs), allows single Reels from DMs and Home Page while blocking scrolling to a 2nd Reel, and auto-closes Instagram after 15 minutes. Ultra-low battery, 100% offline.</string>
+              <string name="accessibility_service_description">Transforms Instagram into a pure messaging app: auto-redirects Home and Reels to DMs, blacks out the Explore content grid while keeping the Search bar visible, allows single shared Reels in DMs, and enforces a 15-minute session limit.</string>
           </resources>
           EOF
 
           cat << 'EOF' > /tmp/InstaReelGuard/app/src/main/res/xml/accessibility_service_config.xml
           <?xml version="1.0" encoding="utf-8"?>
           <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewScrolled|typeViewSelected"
+              android:accessibilityEventTypes="typeWindowStateChanged|typeWindowContentChanged|typeViewClicked|typeViewScrolled|typeViewSelected|typeViewFocused"
               android:accessibilityFeedbackType="feedbackGeneric"
               android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows"
               android:canRetrieveWindowContent="true"
               android:description="@string/accessibility_service_description"
               android:notificationTimeout="140"
-              android:packageNames="com.instagram.android"
               android:settingsActivity="com.instaguard.reelblocker.MainActivity" />
           EOF
 
@@ -203,7 +202,7 @@ jobs:
           <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#0F141A"
+              android:background="#0B0F14"
               android:fillViewport="true">
 
               <LinearLayout
@@ -215,24 +214,24 @@ jobs:
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="InstaReelGuard v2.0"
+                      android:text="InstaReelGuard"
                       android:textColor="#FFFFFF"
-                      android:textSize="26sp"
+                      android:textSize="28sp"
                       android:textStyle="bold" />
 
                   <TextView
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="4dp"
-                      android:text="Ultra-Low Battery • Zero-Telemetry Local Engine"
+                      android:text="Pure Messaging Edition • Always-On Protection"
                       android:textColor="#9AA4B2"
                       android:textSize="14sp" />
 
                   <LinearLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:layout_marginTop="18dp"
-                      android:background="#1A222C"
+                      android:layout_marginTop="20dp"
+                      android:background="#151C24"
                       android:orientation="vertical"
                       android:padding="20dp">
 
@@ -270,78 +269,58 @@ jobs:
                   <LinearLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:layout_marginTop="18dp"
-                      android:background="#1A222C"
+                      android:layout_marginTop="20dp"
+                      android:background="#151C24"
                       android:orientation="vertical"
                       android:padding="20dp">
 
                       <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:text="Protection Rules"
+                          android:text="Locked-In Protection Rules (Always Active)"
                           android:textColor="#FFFFFF"
-                          android:textSize="17sp"
+                          android:textSize="16sp"
                           android:textStyle="bold" />
 
-                      <Switch
-                          android:id="@+id/switch_master_enabled"
+                      <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:layout_marginTop="16dp"
-                          android:checked="true"
-                          android:text="Master Reel Blocker Enabled"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
+                          android:layout_marginTop="14dp"
+                          android:text="• Instant DM-Only Launch: Opening Instagram or tapping Home/Reels immediately sends you to your DM Inbox."
+                          android:textColor="#E2E8F0"
+                          android:textSize="14sp" />
 
-                      <Switch
-                          android:id="@+id/switch_redirect_reels_to_dm"
+                      <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:checked="true"
-                          android:text="Reels Button -> Redirect to DMs"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
+                          android:layout_marginTop="12dp"
+                          android:text="• Explore Blackout Screen: Covers the middle Explore feed in pure AMOLED black while keeping the top Search bar and bottom navigation bar uncovered on all screen sizes."
+                          android:textColor="#E2E8F0"
+                          android:textSize="14sp" />
 
-                      <Switch
-                          android:id="@+id/switch_block_explore_reels"
+                      <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:checked="true"
-                          android:text="Explore Page: Tap Post/Reel -> Redirect to DMs"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
+                          android:layout_marginTop="12dp"
+                          android:text="• Friend DM Reels: Watch any specific Reel sent by a friend in chat; scrolling to a 2nd Reel returns you straight to the chat."
+                          android:textColor="#E2E8F0"
+                          android:textSize="14sp" />
 
-                      <Switch
-                          android:id="@+id/switch_allow_single_dm_reel"
+                      <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:checked="true"
-                          android:text="DMs: Watch Shared Reel, Block 2nd Scroll"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
+                          android:layout_marginTop="12dp"
+                          android:text="• 15-Minute Session Cap: Automatically closes Instagram after 15 minutes of active use."
+                          android:textColor="#E2E8F0"
+                          android:textSize="14sp" />
 
-                      <Switch
-                          android:id="@+id/switch_allow_single_home_reel"
+                      <TextView
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:checked="true"
-                          android:text="Home Page: Watch 1st Reel, Block 2nd Scroll"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
-
-                      <Switch
-                          android:id="@+id/switch_fifteen_min_timer"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:checked="true"
-                          android:text="15-Minute Usage Limit (Auto-Close App)"
-                          android:textColor="#F8FAFC"
-                          android:textSize="15sp" />
+                          android:layout_marginTop="12dp"
+                          android:text="• Ultra-Low Battery &amp; Zero Data Leaks: No switches to disable protection, zero internet permissions, and AMOLED pixel-off blackout."
+                          android:textColor="#6DD58C"
+                          android:textSize="13sp" />
                   </LinearLayout>
               </LinearLayout>
           </ScrollView>
@@ -354,72 +333,26 @@ jobs:
           import android.app.Activity
           import android.content.Context
           import android.content.Intent
-          import android.content.SharedPreferences
           import android.graphics.Color
           import android.os.Bundle
           import android.provider.Settings
           import android.view.accessibility.AccessibilityManager
           import android.widget.Button
-          import android.widget.Switch
           import android.widget.TextView
 
           class MainActivity : Activity() {
 
-              private lateinit var prefs: SharedPreferences
               private lateinit var statusBadgeText: TextView
               private lateinit var statusSubtitleText: TextView
               private lateinit var openSettingsButton: Button
-
-              private lateinit var switchMasterEnabled: Switch
-              private lateinit var switchRedirectReelsToDm: Switch
-              private lateinit var switchBlockExploreReels: Switch
-              private lateinit var switchAllowSingleDmReel: Switch
-              private lateinit var switchAllowSingleHomeReel: Switch
-              private lateinit var switchFifteenMinTimer: Switch
 
               override fun onCreate(savedInstanceState: Bundle?) {
                   super.onCreate(savedInstanceState)
                   setContentView(R.layout.activity_main)
 
-                  prefs = getSharedPreferences(ReelBlockerAccessibilityService.PREFS_NAME, Context.MODE_PRIVATE)
-
                   statusBadgeText = findViewById(R.id.tv_service_status_badge)
                   statusSubtitleText = findViewById(R.id.tv_service_status_subtitle)
                   openSettingsButton = findViewById(R.id.btn_open_accessibility_settings)
-
-                  switchMasterEnabled = findViewById(R.id.switch_master_enabled)
-                  switchRedirectReelsToDm = findViewById(R.id.switch_redirect_reels_to_dm)
-                  switchBlockExploreReels = findViewById(R.id.switch_block_explore_reels)
-                  switchAllowSingleDmReel = findViewById(R.id.switch_allow_single_dm_reel)
-                  switchAllowSingleHomeReel = findViewById(R.id.switch_allow_single_home_reel)
-                  switchFifteenMinTimer = findViewById(R.id.switch_fifteen_min_timer)
-
-                  switchMasterEnabled.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, true)
-                  switchRedirectReelsToDm.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_REDIRECT_REELS_TAB_TO_DM, true)
-                  switchBlockExploreReels.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_BLOCK_EXPLORE_REELS, true)
-                  switchAllowSingleDmReel.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_DM_REEL, true)
-                  switchAllowSingleHomeReel.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_HOME_REEL, true)
-                  switchFifteenMinTimer.isChecked = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_FIFTEEN_MIN_TIMER, true)
-
-                  switchMasterEnabled.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, isChecked).apply()
-                      refreshServiceStatusUi()
-                  }
-                  switchRedirectReelsToDm.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_REDIRECT_REELS_TAB_TO_DM, isChecked).apply()
-                  }
-                  switchBlockExploreReels.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_BLOCK_EXPLORE_REELS, isChecked).apply()
-                  }
-                  switchAllowSingleDmReel.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_DM_REEL, isChecked).apply()
-                  }
-                  switchAllowSingleHomeReel.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_ALLOW_SINGLE_HOME_REEL, isChecked).apply()
-                  }
-                  switchFifteenMinTimer.setOnCheckedChangeListener { _, isChecked ->
-                      prefs.edit().putBoolean(ReelBlockerAccessibilityService.KEY_FIFTEEN_MIN_TIMER, isChecked).apply()
-                  }
 
                   openSettingsButton.setOnClickListener {
                       val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
@@ -436,27 +369,17 @@ jobs:
 
               private fun refreshServiceStatusUi() {
                   val serviceEnabled = isAccessibilityServiceEnabled()
-                  val masterOn = prefs.getBoolean(ReelBlockerAccessibilityService.KEY_MASTER_ENABLED, true)
 
-                  when {
-                      !serviceEnabled -> {
-                          statusBadgeText.text = "ACTION REQUIRED: SERVICE OFF"
-                          statusBadgeText.setTextColor(Color.parseColor("#FFB4AB"))
-                          statusSubtitleText.text = "Tap the button below -> Downloaded Services -> InstaReelGuard -> Turn ON."
-                          openSettingsButton.text = "Enable in Accessibility Settings"
-                      }
-                      !masterOn -> {
-                          statusBadgeText.text = "PAUSED BY USER"
-                          statusBadgeText.setTextColor(Color.parseColor("#FFD580"))
-                          statusSubtitleText.text = "Accessibility Service is connected, but Master Protection is switched off."
-                          openSettingsButton.text = "Manage Accessibility Settings"
-                      }
-                      else -> {
-                          statusBadgeText.text = "ACTIVE & PROTECTING INSTAGRAM"
-                          statusBadgeText.setTextColor(Color.parseColor("#6DD58C"))
-                          statusSubtitleText.text = "Ultra-Low Battery Mode • Explore & Reels Protected • 15-Min Timer Active"
-                          openSettingsButton.text = "Open Accessibility Settings"
-                      }
+                  if (!serviceEnabled) {
+                      statusBadgeText.text = "ACTION REQUIRED: SERVICE OFF"
+                      statusBadgeText.setTextColor(Color.parseColor("#FFB4AB"))
+                      statusSubtitleText.text = "Tap the button below -> Downloaded Services -> InstaReelGuard Blocker -> Turn ON."
+                      openSettingsButton.text = "Enable in Accessibility Settings"
+                  } else {
+                      statusBadgeText.text = "LOCKED ON • PURE MESSAGING MODE ACTIVE"
+                      statusBadgeText.setTextColor(Color.parseColor("#6DD58C"))
+                      statusSubtitleText.text = "DM-Only Launch • Explore Blackout Shield • 15-Min Cap • Ultra-Low Battery"
+                      openSettingsButton.text = "Accessibility Settings"
                   }
               }
 
@@ -480,39 +403,58 @@ jobs:
           import android.accessibilityservice.AccessibilityService
           import android.accessibilityservice.AccessibilityServiceInfo
           import android.content.Context
-          import android.content.SharedPreferences
+          import android.graphics.Color
+          import android.graphics.PixelFormat
           import android.graphics.Rect
           import android.os.Build
           import android.os.Handler
           import android.os.Looper
           import android.os.SystemClock
+          import android.util.TypedValue
+          import android.view.Gravity
+          import android.view.View
+          import android.view.WindowManager
           import android.view.accessibility.AccessibilityEvent
           import android.view.accessibility.AccessibilityNodeInfo
+          import android.widget.FrameLayout
+          import android.widget.TextView
           import android.widget.Toast
 
+          /**
+           * InstaReelGuard v3.0 — Locked Pure Messaging Edition.
+           *
+           * 1. Always-On Protection: No user switches to disable blocking.
+           * 2. Instant DM-Only Launch: Opening Instagram (or landing on the Home page or Reels tab)
+           *    immediately clicks the top-right DM button (or switches to Home -> clicks DM),
+           *    so the user never sees or scrolls the Home feed or Reels tab.
+           * 3. Pixel-Adaptive Explore Blackout Screen: When the user taps the Explore/Search tab,
+           *    dynamically measures the exact pixel bottom of the Search bar and exact pixel top
+           *    of the Bottom Navigation bar on any phone (iQOO Z10, Samsung, OnePlus, Xiaomi, Pixel)
+           *    and covers ONLY the middle Explore content area with a pure AMOLED black (#000000)
+           *    shield. Automatically hides when the user taps the Search bar to type a username.
+           * 4. DM Single-Reel Allowance: Allows watching individual Reels shared by friends inside DMs,
+           *    and kicks back to the DM chat the moment the user scrolls to a 2nd Reel.
+           * 5. 15-Minute Session Limit: Closes Instagram after 15 minutes of active usage.
+           */
           class ReelBlockerAccessibilityService : AccessibilityService() {
 
               companion object {
                   private const val INSTAGRAM_PACKAGE = "com.instagram.android"
 
-                  const val PREFS_NAME = "instaguard_prefs"
-                  const val KEY_MASTER_ENABLED = "master_enabled"
-                  const val KEY_REDIRECT_REELS_TAB_TO_DM = "redirect_reels_tab_to_dm"
-                  const val KEY_BLOCK_EXPLORE_REELS = "block_explore_reels"
-                  const val KEY_ALLOW_SINGLE_DM_REEL = "allow_single_dm_reel"
-                  const val KEY_ALLOW_SINGLE_HOME_REEL = "allow_single_home_reel"
-                  const val KEY_FIFTEEN_MIN_TIMER = "fifteen_min_timer"
-
-                  // Exact Instagram Resource IDs (searched via native C++ findAccessibilityNodeInfosByViewId)
+                  // Bottom Navigation Bar IDs
                   private const val ID_REELS_TAB = "com.instagram.android:id/clips_tab"
                   private const val ID_HOME_TAB = "com.instagram.android:id/feed_tab"
                   private const val ID_EXPLORE_TAB = "com.instagram.android:id/search_tab"
+                  private const val ID_TAB_BAR = "com.instagram.android:id/tab_bar"
 
+                  // Top-Right DM Button IDs on Home Screen
                   private val DM_BUTTON_IDS = arrayOf(
                       "com.instagram.android:id/action_bar_inbox_button",
                       "com.instagram.android:id/direct_tab",
                       "com.instagram.android:id/action_bar_wrapper_inbox_button"
                   )
+
+                  // DM Inbox & Chat Thread IDs
                   private val DM_SCREEN_IDS = arrayOf(
                       "com.instagram.android:id/row_thread_composer_edittext",
                       "com.instagram.android:id/row_thread_composer_button_send",
@@ -521,31 +463,43 @@ jobs:
                       "com.instagram.android:id/thread_list_recyclerview",
                       "com.instagram.android:id/direct_inbox_recycler_view"
                   )
+
+                  // Explore Top Search Bar IDs (for dynamic pixel-exact top boundary calculation)
+                  private val EXPLORE_SEARCH_BAR_IDS = arrayOf(
+                      "com.instagram.android:id/action_bar_search_edit_text",
+                      "com.instagram.android:id/search_row",
+                      "com.instagram.android:id/action_bar_container",
+                      "com.instagram.android:id/action_bar_wrapper"
+                  )
+
+                  // Active Search Typing / Results Indicators (when user tapped Search bar to find a user)
+                  private val SEARCH_ACTIVE_INDICATORS = arrayOf(
+                      "com.instagram.android:id/action_bar_button_back",
+                      "com.instagram.android:id/ clear_button",
+                      "com.instagram.android:id/search_A_recycler_view",
+                      "com.instagram.android:id/tabbed_landing_tab_header"
+                  )
+
+                  // Full-Screen Reel Viewer (ClipsViewer) IDs
                   private val CLIPS_VIEWER_IDS = arrayOf(
                       "com.instagram.android:id/clips_viewer_view_pager",
                       "com.instagram.android:id/clips_viewer_root",
                       "com.instagram.android:id/clips_item_overlay_component",
                       "com.instagram.android:id/clips_video_container"
                   )
-                  private val EXPLORE_POST_FEED_IDS = arrayOf(
-                      "com.instagram.android:id/contextual_feed_title",
-                      "com.instagram.android:id/chaining_feed_title"
-                  )
-                  private val STORY_VIEWER_IDS = arrayOf(
-                      "com.instagram.android:id/reel_viewer_root",
-                      "com.instagram.android:id/reel_viewer_image_view",
-                      "com.instagram.android:id/story_viewer_container"
-                  )
+
                   private val COMMENT_OR_SHEET_IDS = arrayOf(
                       "com.instagram.android:id/comment_list",
                       "com.instagram.android:id/layout_comment_thread",
                       "com.instagram.android:id/direct_share_sheet",
                       "com.instagram.android:id/bottom_sheet_container"
                   )
+
                   private val HOME_FEED_TOP_INDICATORS = arrayOf(
                       "com.instagram.android:id/action_bar_inbox_button",
                       "com.instagram.android:id/tray_recycler_view"
                   )
+
                   private val REEL_SIGNATURE_IDS = arrayOf(
                       "com.instagram.android:id/clips_author_username",
                       "com.instagram.android:id/clips_author_info",
@@ -565,9 +519,9 @@ jobs:
 
                   // Ultra-low battery & debounce timings
                   private const val CONTENT_EVENT_THROTTLE_MS = 220L
-                  private const val ACTION_COOLDOWN_MS = 520L
+                  private const val ACTION_COOLDOWN_MS = 450L
                   private const val INITIAL_REEL_SETTLE_GRACE_MS = 520L
-                  private const val ALLOWED_TAP_WINDOW_MS = 3200L
+                  private const val ALLOWED_TAP_WINDOW_MS = 3500L
                   private const val DM_REDIRECT_TIMEOUT_MS = 1800L
 
                   // 15-Minute Usage Limit constants
@@ -580,23 +534,31 @@ jobs:
               }
 
               private enum class ScreenOrigin {
-                  HOME_FEED,
                   DM_CHAT_OR_INBOX,
                   EXPLORE_PAGE,
+                  HOME_FEED,
                   OTHER
               }
 
-              private lateinit var prefs: SharedPreferences
               private val mainHandler = Handler(Looper.getMainLooper())
+              private var windowManager: WindowManager? = null
 
-              private var lastOrigin: ScreenOrigin = ScreenOrigin.HOME_FEED
+              // Explore Blackout Overlay Views & LayoutParams
+              private var exploreBlackoutView: FrameLayout? = null
+              private var exploreOverlayParams: WindowManager.LayoutParams? = null
+              private var isExploreOverlayAdded: Boolean = false
+              private var lastOverlayTopY: Int = -1
+              private var lastOverlayHeight: Int = -1
+
+              // State machine variables
+              private var lastOrigin: ScreenOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
               private var inSingleReelSession: Boolean = false
               private var singleReelOpenedAtMs: Long = 0L
               private var initialReelSignature: String? = null
               private var initialPagerIndex: Int = -1
 
-              private var lastAllowedContentTapAtMs: Long = 0L
-              private var lastAllowedTapOrigin: ScreenOrigin = ScreenOrigin.HOME_FEED
+              private var lastAllowedDmReelTapAtMs: Long = 0L
+              private var searchTypingActiveUntilMs: Long = 0L
 
               private var pendingClickDmInbox: Boolean = false
               private var pendingClickDmDeadlineMs: Long = 0L
@@ -625,15 +587,18 @@ jobs:
               override fun onServiceConnected() {
                   super.onServiceConnected()
                   isServiceCurrentlyRunning = true
-                  prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                  windowManager = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
 
                   serviceInfo = serviceInfo.apply {
-                      packageNames = arrayOf(INSTAGRAM_PACKAGE)
+                      // Listen for window changes across packages ONLY so we can immediately hide the
+                      // Explore Blackout Overlay the instant the user leaves Instagram!
+                      packageNames = null
                       eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or
                               AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED or
                               AccessibilityEvent.TYPE_VIEW_CLICKED or
                               AccessibilityEvent.TYPE_VIEW_SCROLLED or
-                              AccessibilityEvent.TYPE_VIEW_SELECTED
+                              AccessibilityEvent.TYPE_VIEW_SELECTED or
+                              AccessibilityEvent.TYPE_VIEW_FOCUSED
                       feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
                       flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or
                               AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
@@ -644,40 +609,48 @@ jobs:
               override fun onAccessibilityEvent(event: AccessibilityEvent?) {
                   if (event == null) return
                   val pkg = event.packageName?.toString() ?: return
-                  if (pkg != INSTAGRAM_PACKAGE) return
-                  if (!prefs.getBoolean(KEY_MASTER_ENABLED, true)) return
+
+                  // Zero-battery fast exit for all non-Instagram apps, while ensuring overlay is hidden
+                  if (pkg != INSTAGRAM_PACKAGE) {
+                      // Ignore our own overlay events
+                      if (pkg == packageName) return
+                      if (isExploreOverlayAdded) {
+                          hideExploreBlackoutOverlay()
+                      }
+                      return
+                  }
 
                   val now = SystemClock.elapsedRealtime()
 
                   // 1. Check 15-Minute Active Usage Timer
                   if (checkAndEnforceFifteenMinuteLimit(now)) {
+                      hideExploreBlackoutOverlay()
                       return
                   }
 
                   val eventType = event.eventType
 
-                  // 2. Direct Click & Selection Handling (Reels Tab, Explore Grid Tiles, or Home/DM Reel Tap)
+                  // 2. Handle Click, Selection & Focus Events
                   if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED ||
-                      eventType == AccessibilityEvent.TYPE_VIEW_SELECTED
+                      eventType == AccessibilityEvent.TYPE_VIEW_SELECTED ||
+                      eventType == AccessibilityEvent.TYPE_VIEW_FOCUSED
                   ) {
                       if (isEventSourceReelsBottomTab(event)) {
+                          hideExploreBlackoutOverlay()
                           redirectToDmSection(now)
                           return
                       }
-                      if (eventType == AccessibilityEvent.TYPE_VIEW_CLICKED) {
-                          if (handleClickEventByOrigin(event, now)) {
-                              return
-                          }
+                      if (handleDirectClickOrFocus(event, now)) {
+                          return
                       }
                   }
 
-                  // 3. Direct Scroll Handling (Enforces stopping on the 2nd Reel for BOTH Home Page and DMs!)
+                  // 3. Handle Scroll Events (Stop scrolling to a 2nd Reel in DM Reel player)
                   if (eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
                       if (inSingleReelSession) {
                           handleScrollDuringSingleReelSession(event, now)
                           return
                       } else {
-                          // Even if inSingleReelSession wasn't set yet, check if scrolled inside ClipsViewer
                           val srcId = event.source?.viewIdResourceName ?: ""
                           if (srcId.contains("clips_viewer")) {
                               handleScrollDuringSingleReelSession(event, now)
@@ -688,7 +661,6 @@ jobs:
 
                   // 4. Ultra-low battery throttling for high-frequency content events
                   if (eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
-                      // If we are calmly watching the 1st allowed Reel and not scrolling, skip heavy checks to save battery
                       if (inSingleReelSession && !pendingClickDmInbox && (now - lastContentCheckAtMs < 400L)) {
                           return
                       }
@@ -697,23 +669,16 @@ jobs:
                   }
 
                   val root = rootInActiveWindow ?: return
+                  if (root.packageName?.toString() != INSTAGRAM_PACKAGE) {
+                      hideExploreBlackoutOverlay()
+                      return
+                  }
                   evaluateScreenStateFast(root, now)
               }
 
-              /**
-               * Tracks active usage inside Instagram. If user uses Instagram for 15 minutes,
-               * closes Instagram to the phone's Home Screen and resets the timer for next reopen.
-               */
               private fun checkAndEnforceFifteenMinuteLimit(now: Long): Boolean {
-                  if (!prefs.getBoolean(KEY_FIFTEEN_MIN_TIMER, true)) {
-                      usageSessionStartAtMs = 0L
-                      return false
-                  }
-
-                  // Ignore residual events within 3 seconds of closing Instagram
                   if (now - lastTimerCloseAtMs < 3000L) return true
 
-                  // Reset session if user was away from Instagram for > 2 minutes
                   if (usageSessionStartAtMs == 0L || (now - lastInstaActivityAtMs) > SESSION_IDLE_RESET_MS) {
                       usageSessionStartAtMs = now
                       lastInstaActivityAtMs = now
@@ -721,13 +686,12 @@ jobs:
                   }
 
                   lastInstaActivityAtMs = now
-                  val elapsedActiveMs = now - usageSessionStartAtMs
-
-                  if (elapsedActiveMs >= FIFTEEN_MINUTES_MS) {
+                  if (now - usageSessionStartAtMs >= FIFTEEN_MINUTES_MS) {
                       usageSessionStartAtMs = 0L
                       lastInstaActivityAtMs = 0L
                       lastTimerCloseAtMs = now
                       resetSingleReelSession()
+                      hideExploreBlackoutOverlay()
                       Toast.makeText(
                           applicationContext,
                           "15 minutes on Instagram completed! Closing app.",
@@ -739,68 +703,65 @@ jobs:
                   return false
               }
 
-              /**
-               * Handles clicks based on whether the user is on the Explore Page, Home Feed, or DM Chat.
-               */
-              private fun handleClickEventByOrigin(event: AccessibilityEvent, now: Long): Boolean {
+              private fun handleDirectClickOrFocus(event: AccessibilityEvent, now: Long): Boolean {
                   val src = event.source ?: return false
+                  val viewId = src.viewIdResourceName ?: ""
+                  val className = event.className?.toString() ?: ""
                   val rect = Rect()
                   src.getBoundsInScreen(rect)
                   val screenHeight = resources.displayMetrics.heightPixels
-                  val viewId = src.viewIdResourceName ?: ""
-                  val className = event.className?.toString() ?: ""
 
-                  // Check if clicked on bottom navigation tabs first
+                  // If user tapped the Search bar at the top of Explore to type a username -> hide blackout shield
+                  if (viewId.contains("action_bar_search_edit_text") ||
+                      viewId.contains("search_row") ||
+                      className.contains("EditText", ignoreCase = true) ||
+                      (lastOrigin == ScreenOrigin.EXPLORE_PAGE && rect.bottom <= (screenHeight * 0.17).toInt())
+                  ) {
+                      searchTypingActiveUntilMs = now + 2500L
+                      hideExploreBlackoutOverlay()
+                      return false
+                  }
+
+                  // If user tapped the Explore tab button on the bottom bar
                   if (viewId == ID_EXPLORE_TAB) {
                       lastOrigin = ScreenOrigin.EXPLORE_PAGE
+                      searchTypingActiveUntilMs = 0L
                       resetSingleReelSession()
-                      return false
-                  }
-                  if (viewId == ID_HOME_TAB) {
-                      lastOrigin = ScreenOrigin.HOME_FEED
-                      resetSingleReelSession()
-                      return false
-                  }
-
-                  val isMainContentArea = rect.top > (screenHeight * 0.14).toInt() &&
-                          rect.bottom < (screenHeight * 0.86).toInt()
-
-                  // EXPLORE PAGE RULE: If user is on Explore page and clicks any post or Reel tile in the grid,
-                  // immediately redirect them to the DM page! (Typing in top Search EditText is still allowed).
-                  if (lastOrigin == ScreenOrigin.EXPLORE_PAGE &&
-                      prefs.getBoolean(KEY_BLOCK_EXPLORE_REELS, true)
-                  ) {
-                      val isSearchBoxTap = viewId.contains("search", ignoreCase = true) ||
-                              className.contains("EditText", ignoreCase = true) ||
-                              rect.bottom <= (screenHeight * 0.16).toInt()
-
-                      if (!isSearchBoxTap && isMainContentArea) {
-                          redirectToDmSection(now)
-                          return true
+                      val root = rootInActiveWindow
+                      if (root != null) {
+                          showOrUpdateExploreBlackoutOverlay(root)
                       }
+                      return false
                   }
 
-                  // HOME FEED OR DM CHAT: Record allowed tap so the 1st opened Reel plays normally
-                  if ((lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX || lastOrigin == ScreenOrigin.HOME_FEED) &&
+                  // If user tapped the Home tab button on the bottom bar -> immediately redirect to DMs!
+                  if (viewId == ID_HOME_TAB) {
+                      hideExploreBlackoutOverlay()
+                      redirectToDmSection(now)
+                      return true
+                  }
+
+                  // If user is inside a DM chat and taps a shared Reel in the chat area
+                  if (lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX &&
+                      event.eventType == AccessibilityEvent.TYPE_VIEW_CLICKED &&
                       rect.bottom < (screenHeight * 0.88).toInt()
                   ) {
-                      lastAllowedContentTapAtMs = now
-                      lastAllowedTapOrigin = lastOrigin
+                      lastAllowedDmReelTapAtMs = now
                       lastBlockActionAtMs = 0L
                   }
                   return false
               }
 
               /**
-               * Ultra-fast, low-battery screen state evaluator using Android's native C++
-               * findAccessibilityNodeInfosByViewId instead of expensive full-tree walks.
+               * Evaluates the active Instagram screen using ultra-fast native C++ ID lookups.
                */
               private fun evaluateScreenStateFast(root: AccessibilityNodeInfo, now: Long) {
-                  // 1. Complete pending DM inbox click if we just switched to the Home tab
+                  // 1. Complete pending DM inbox click if we just landed on Home
                   if (pendingClickDmInbox) {
                       if (now < pendingClickDmDeadlineMs) {
                           if (tryClickDmButtonFast(root)) {
                               pendingClickDmInbox = false
+                              hideExploreBlackoutOverlay()
                               resetSingleReelSession()
                               lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                               return
@@ -810,11 +771,6 @@ jobs:
                       }
                   }
 
-                  // 2. Never interfere with Instagram Stories
-                  if (hasAnyVisibleNode(root, STORY_VIEWER_IDS)) {
-                      return
-                  }
-
                   val screenHeight = resources.displayMetrics.heightPixels
                   val isClipsFullscreen = isFullscreenClipsViewerVisible(root, screenHeight)
                   val isReelsTabSelected = isBottomTabSelected(root, ID_REELS_TAB)
@@ -822,63 +778,43 @@ jobs:
                   val isHomeTabSelected = isBottomTabSelected(root, ID_HOME_TAB)
                   val isDmScreenVisible = hasAnyVisibleNode(root, DM_SCREEN_IDS)
 
-                  // 3. If user is inside DM Inbox or DM Chat (and full-screen Reel player is not covering it)
+                  // 2. User is inside DM Inbox or a Friend's DM Chat Thread
                   if (isDmScreenVisible && !isClipsFullscreen) {
+                      hideExploreBlackoutOverlay()
                       lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                       resetSingleReelSession()
                       return
                   }
 
-                  // 4. Explore Page checks
+                  // 3. User is on the Explore / Search Tab
                   if (isExploreTabSelected && !isClipsFullscreen) {
-                      // If user tapped an Explore post and opened the Explore contextual post feed -> redirect to DMs!
-                      if (prefs.getBoolean(KEY_BLOCK_EXPLORE_REELS, true) &&
-                          hasAnyVisibleNode(root, EXPLORE_POST_FEED_IDS)
-                      ) {
-                          redirectToDmSection(now, root)
-                          return
-                      }
                       lastOrigin = ScreenOrigin.EXPLORE_PAGE
                       resetSingleReelSession()
+
+                      // Check if user is actively typing/searching in the top Search bar
+                      if (isSearchTypingOrResultsActive(root, now)) {
+                          hideExploreBlackoutOverlay()
+                      } else {
+                          showOrUpdateExploreBlackoutOverlay(root)
+                      }
                       return
+                  } else {
+                      // Not on Explore tab -> make sure Explore Blackout Overlay is hidden
+                      hideExploreBlackoutOverlay()
                   }
 
-                  // 5. Full-Screen Reel Viewer (ClipsViewer) is active on screen
+                  // 4. Full-Screen Reel Viewer (ClipsViewer) is visible
                   if (isClipsFullscreen) {
-                      // If opened from Explore Page -> immediately redirect to DMs!
-                      if ((lastOrigin == ScreenOrigin.EXPLORE_PAGE || isExploreTabSelected) &&
-                          prefs.getBoolean(KEY_BLOCK_EXPLORE_REELS, true)
-                      ) {
+                      val recentlyTappedInDm = (now - lastAllowedDmReelTapAtMs) <= ALLOWED_TAP_WINDOW_MS
+                      val allowedFromDm = (lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX || recentlyTappedInDm)
+
+                      // Only Reels opened from a Friend's DM Chat are allowed!
+                      // Any Reel opened from Reels tab, Home, or Explore is immediately redirected to DMs or closed.
+                      if (!allowedFromDm || (isReelsTabSelected && !inSingleReelSession && !recentlyTappedInDm)) {
                           redirectToDmSection(now, root)
                           return
                       }
 
-                      val allowDmReel = prefs.getBoolean(KEY_ALLOW_SINGLE_DM_REEL, true)
-                      val allowHomeReel = prefs.getBoolean(KEY_ALLOW_SINGLE_HOME_REEL, true)
-
-                      val recentlyTappedAllowed = (now - lastAllowedContentTapAtMs) <= ALLOWED_TAP_WINDOW_MS
-                      val effectiveOrigin = if (recentlyTappedAllowed) lastAllowedTapOrigin else lastOrigin
-
-                      val isAllowedSingleReel =
-                          (effectiveOrigin == ScreenOrigin.DM_CHAT_OR_INBOX && allowDmReel) ||
-                          (effectiveOrigin == ScreenOrigin.HOME_FEED && allowHomeReel)
-
-                      // If user clicked the Reels tab directly (not a Reel from Home or DMs), redirect to DMs
-                      if (isReelsTabSelected && !inSingleReelSession && !recentlyTappedAllowed) {
-                          redirectToDmSection(now, root)
-                          return
-                      }
-
-                      if (!isAllowedSingleReel) {
-                          if (effectiveOrigin == ScreenOrigin.EXPLORE_PAGE) {
-                              redirectToDmSection(now, root)
-                          } else {
-                              triggerBackAction(now)
-                          }
-                          return
-                      }
-
-                      // Start or maintain the Single-Reel Session (works identically for Home Page & DMs!)
                       if (!inSingleReelSession) {
                           inSingleReelSession = true
                           singleReelOpenedAtMs = now
@@ -892,7 +828,7 @@ jobs:
                           } else if (oldSig != null && newSig != null && oldSig != newSig &&
                               !hasAnyVisibleNode(root, COMMENT_OR_SHEET_IDS)
                           ) {
-                              // Reel author/caption changed -> user scrolled to 2nd Reel -> kick back!
+                              // User scrolled to a 2nd Reel -> kick right back into the friend's DM chat!
                               resetSingleReelSession()
                               triggerBackAction(now)
                               return
@@ -901,33 +837,193 @@ jobs:
                       return
                   }
 
-                  // 6. Bottom Reels Tab selected directly -> block & redirect to DMs
-                  if (isReelsTabSelected && !inSingleReelSession) {
+                  // 5. Reels Tab OR Home Feed is visible -> Immediately redirect to DM Inbox!
+                  // (The minute the user opens Instagram on the Home feed, it clicks the DM icon and enters DMs!)
+                  if (isReelsTabSelected || isHomeTabSelected || hasAnyVisibleNode(root, HOME_FEED_TOP_INDICATORS)) {
+                      resetSingleReelSession()
                       redirectToDmSection(now, root)
                       return
-                  }
-
-                  // 7. User is on the normal Home Feed (only reset session when ClipsViewer is truly closed)
-                  if (isHomeTabSelected && !isClipsFullscreen) {
-                      lastOrigin = ScreenOrigin.HOME_FEED
-                      resetSingleReelSession()
-                      return
-                  }
-
-                  if (!isClipsFullscreen) {
-                      lastOrigin = ScreenOrigin.OTHER
-                      resetSingleReelSession()
                   }
               }
 
               /**
+               * Determines if the user is actively typing a query or viewing username search results
+               * after tapping the top Search bar on the Explore tab.
+               */
+              private fun isSearchTypingOrResultsActive(root: AccessibilityNodeInfo, now: Long): Boolean {
+                  if (now < searchTypingActiveUntilMs) return true
+
+                  // Check if the Search EditText is focused or has typed characters
+                  val searchNodes = root.findAccessibilityNodeInfosByViewId("com.instagram.android:id/action_bar_search_edit_text")
+                  if (searchNodes != null) {
+                      for (node in searchNodes) {
+                          if (!node.isVisibleToUser) continue
+                          if (node.isFocused) return true
+                          val txt = node.text?.toString()?.trim() ?: ""
+                          // Default hint is "Search" or empty; if user typed something else, keep results visible
+                          if (txt.isNotEmpty() && !txt.equals("Search", ignoreCase = true)) {
+                              return true
+                          }
+                      }
+                  }
+
+                  // Check if the top-left Back arrow inside the active search sub-screen is visible
+                  if (hasAnyVisibleNode(root, SEARCH_ACTIVE_INDICATORS)) {
+                      return true
+                  }
+                  return false
+              }
+
+              /**
+               * Dynamically measures the exact pixel bottom of the Search bar and exact pixel top
+               * of the Bottom Navigation bar on ANY Android phone (iQOO Z10, Samsung, OnePlus, Pixel, etc.)
+               * and places a pure black (#000000) shield over ONLY the middle Explore content area.
+               */
+              private fun showOrUpdateExploreBlackoutOverlay(root: AccessibilityNodeInfo) {
+                  val wm = windowManager ?: return
+                  val metrics = resources.displayMetrics
+                  val screenHeight = metrics.heightPixels
+                  val rect = Rect()
+
+                  // 1. Dynamically find the bottom pixel of the top Search bar
+                  var topEdgeY = -1
+                  for (id in EXPLORE_SEARCH_BAR_IDS) {
+                      val nodes = root.findAccessibilityNodeInfosByViewId(id) ?: continue
+                      for (node in nodes) {
+                          if (!node.isVisibleToUser) continue
+                          node.getBoundsInScreen(rect)
+                          if (rect.bottom > 0 && rect.bottom < (screenHeight * 0.28).toInt()) {
+                              if (rect.bottom > topEdgeY) {
+                                  topEdgeY = rect.bottom
+                              }
+                          }
+                      }
+                      if (topEdgeY > 0) break
+                  }
+
+                  // Fallback if Instagram hasn't finished laying out the Search bar node yet
+                  if (topEdgeY <= 0) {
+                      topEdgeY = getStatusBarHeightPx() + dpToPx(58f)
+                  }
+
+                  // 2. Dynamically find the top pixel of the Bottom Navigation Bar
+                  var bottomEdgeY = -1
+                  val bottomBarIds = arrayOf(ID_TAB_BAR, ID_EXPLORE_TAB, ID_HOME_TAB, ID_REELS_TAB)
+                  for (id in bottomBarIds) {
+                      val nodes = root.findAccessibilityNodeInfosByViewId(id) ?: continue
+                      for (node in nodes) {
+                          if (!node.isVisibleToUser) continue
+                          node.getBoundsInScreen(rect)
+                          if (rect.top > (screenHeight * 0.72).toInt()) {
+                              bottomEdgeY = rect.top
+                              break
+                          }
+                      }
+                      if (bottomEdgeY > 0) break
+                  }
+
+                  // Fallback if bottom bar node bounds aren't reported yet
+                  if (bottomEdgeY <= topEdgeY) {
+                      bottomEdgeY = screenHeight - getNavigationBarHeightPx() - dpToPx(52f)
+                  }
+
+                  val overlayHeight = (bottomEdgeY - topEdgeY).coerceAtLeast(dpToPx(200f))
+
+                  if (exploreBlackoutView == null) {
+                      val container = FrameLayout(this).apply {
+                          setBackgroundColor(Color.BLACK)
+                          // Absorb touches on the middle Explore grid so no hidden Reel/post can be clicked
+                          isClickable = true
+                          isFocusable = false
+                      }
+                      val label = TextView(this).apply {
+                          text = "Explore Feed Hidden • Use Search Bar Above"
+                          setTextColor(Color.parseColor("#3B424C"))
+                          textSize = 13f
+                          gravity = Gravity.CENTER
+                      }
+                      val lp = FrameLayout.LayoutParams(
+                          FrameLayout.LayoutParams.WRAP_CONTENT,
+                          FrameLayout.LayoutParams.WRAP_CONTENT,
+                          Gravity.CENTER
+                      )
+                      container.addView(label, lp)
+                      exploreBlackoutView = container
+                  }
+
+                  if (exploreOverlayParams == null) {
+                      exploreOverlayParams = WindowManager.LayoutParams(
+                          WindowManager.LayoutParams.MATCH_PARENT,
+                          overlayHeight,
+                          WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
+                          WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                                  WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
+                          PixelFormat.OPAQUE
+                      ).apply {
+                          gravity = Gravity.TOP or Gravity.START
+                          x = 0
+                          y = topEdgeY
+                      }
+                  }
+
+                  try {
+                      if (!isExploreOverlayAdded) {
+                          exploreOverlayParams!!.y = topEdgeY
+                          exploreOverlayParams!!.height = overlayHeight
+                          wm.addView(exploreBlackoutView, exploreOverlayParams)
+                          isExploreOverlayAdded = true
+                          lastOverlayTopY = topEdgeY
+                          lastOverlayHeight = overlayHeight
+                      } else if (kotlin.math.abs(lastOverlayTopY - topEdgeY) > 4 ||
+                          kotlin.math.abs(lastOverlayHeight - overlayHeight) > 4
+                      ) {
+                          exploreOverlayParams!!.y = topEdgeY
+                          exploreOverlayParams!!.height = overlayHeight
+                          wm.updateViewLayout(exploreBlackoutView, exploreOverlayParams)
+                          lastOverlayTopY = topEdgeY
+                          lastOverlayHeight = overlayHeight
+                      }
+                  } catch (_: Throwable) {
+                  }
+              }
+
+              private fun hideExploreBlackoutOverlay() {
+                  if (!isExploreOverlayAdded) return
+                  val wm = windowManager ?: return
+                  val view = exploreBlackoutView ?: return
+                  try {
+                      wm.removeViewImmediate(view)
+                  } catch (_: Throwable) {
+                  } finally {
+                      isExploreOverlayAdded = false
+                  }
+              }
+
+              private fun dpToPx(dp: Float): Int {
+                  return TypedValue.applyDimension(
+                      TypedValue.COMPLEX_UNIT_DIP,
+                      dp,
+                      resources.displayMetrics
+                  ).toInt()
+              }
+
+              private fun getStatusBarHeightPx(): Int {
+                  val resId = resources.getIdentifier("status_bar_height", "dimen", "android")
+                  return if (resId > 0) resources.getDimensionPixelSize(resId) else dpToPx(32f)
+              }
+
+              private fun getNavigationBarHeightPx(): Int {
+                  val resId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+                  return if (resId > 0) resources.getDimensionPixelSize(resId) else dpToPx(42f)
+              }
+
+              /**
                * Catches any vertical scroll to a 2nd Reel inside the full-screen Reel player
-               * (whether opened from a DM chat OR from the Home Page) and immediately presses Back.
+               * opened from a DM chat and immediately returns the user to that chat.
                */
               private fun handleScrollDuringSingleReelSession(event: AccessibilityEvent, now: Long) {
                   if (!inSingleReelSession) {
-                      // If ClipsViewer just opened from Home or DM without prior state event, initialize session
-                      if (lastOrigin == ScreenOrigin.HOME_FEED || lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX) {
+                      if (lastOrigin == ScreenOrigin.DM_CHAT_OR_INBOX) {
                           inSingleReelSession = true
                           singleReelOpenedAtMs = now
                           initialPagerIndex = event.fromIndex
@@ -941,7 +1037,6 @@ jobs:
                   val parentId = src?.parent?.viewIdResourceName?.lowercase() ?: ""
                   val className = event.className?.toString()?.lowercase() ?: ""
 
-                  // Never block scrolling inside Comments, Share Sheets, or Horizontal Carousels
                   if (SAFE_SCROLL_HINTS.any { viewId.contains(it) || parentId.contains(it) }) {
                       return
                   }
@@ -956,7 +1051,6 @@ jobs:
 
                   val currentIndex = event.fromIndex
 
-                  // Ignore initial layout settle scroll events during the first 520ms of opening the Reel
                   if (elapsedSinceOpen <= INITIAL_REEL_SETTLE_GRACE_MS) {
                       if (initialPagerIndex == -1 && currentIndex >= 0) {
                           initialPagerIndex = currentIndex
@@ -964,11 +1058,9 @@ jobs:
                       return
                   }
 
-                  // Verify that comments or share sheet is not open on screen
                   val root = rootInActiveWindow
                   if (root != null) {
                       if (hasAnyVisibleNode(root, COMMENT_OR_SHEET_IDS)) return
-                      // Also verify we are still inside the full-screen ClipsViewer (not back on the Home feed list)
                       if (!isFullscreenClipsViewerVisible(root, resources.displayMetrics.heightPixels)) {
                           resetSingleReelSession()
                           return
@@ -986,7 +1078,6 @@ jobs:
 
                   val isDirectClipsPager = viewId.contains("clips_viewer") || parentId.contains("clips_viewer")
 
-                  // Any scroll on the ClipsViewer pager after the 520ms settle window means the user swiped to a 2nd Reel!
                   if (indexChanged || deltaYScrolled || isDirectClipsPager) {
                       resetSingleReelSession()
                       triggerBackAction(now)
@@ -994,37 +1085,36 @@ jobs:
               }
 
               /**
-               * Redirects the user to the DM Inbox (used when clicking the Reels tab OR clicking a post/Reel on Explore).
+               * Redirects the user immediately to the DM Inbox (clicks top-right DM icon if on Home,
+               * or clicks Home tab -> clicks DM icon if on Reels tab).
                */
               private fun redirectToDmSection(now: Long, rootNode: AccessibilityNodeInfo? = null) {
                   if (now - lastBlockActionAtMs < ACTION_COOLDOWN_MS) return
                   lastBlockActionAtMs = now
                   resetSingleReelSession()
-                  lastAllowedContentTapAtMs = 0L
-
-                  val shouldRedirectToDm = prefs.getBoolean(KEY_REDIRECT_REELS_TAB_TO_DM, true) ||
-                          (lastOrigin == ScreenOrigin.EXPLORE_PAGE && prefs.getBoolean(KEY_BLOCK_EXPLORE_REELS, true))
+                  lastAllowedDmReelTapAtMs = 0L
+                  hideExploreBlackoutOverlay()
 
                   val root = rootNode ?: rootInActiveWindow
 
-                  if (shouldRedirectToDm && root != null) {
-                      // Step 1: If top-right DM button is already visible, click it directly
+                  if (root != null) {
+                      // Step 1: If top-right DM button is already visible (e.g., on Home screen), click it immediately!
                       if (tryClickDmButtonFast(root)) {
                           pendingClickDmInbox = false
                           lastOrigin = ScreenOrigin.DM_CHAT_OR_INBOX
                           return
                       }
 
-                      // Step 2: Click the Home tab first (where the top-right DM button lives) and auto-click DM
+                      // Step 2: Click the Home tab first so the top-right DM button appears, then auto-click DM
                       val homeNodes = root.findAccessibilityNodeInfosByViewId(ID_HOME_TAB)
                       val homeNode = homeNodes?.firstOrNull()
                       if (homeNode != null && clickNodeOrParent(homeNode)) {
                           pendingClickDmInbox = true
                           pendingClickDmDeadlineMs = now + DM_REDIRECT_TIMEOUT_MS
                           mainHandler.removeCallbacks(dmClickRetryRunnable)
-                          mainHandler.postDelayed(dmClickRetryRunnable, 150L)
-                          mainHandler.postDelayed(dmClickRetryRunnable, 320L)
-                          mainHandler.postDelayed(dmClickRetryRunnable, 520L)
+                          mainHandler.postDelayed(dmClickRetryRunnable, 120L)
+                          mainHandler.postDelayed(dmClickRetryRunnable, 280L)
+                          mainHandler.postDelayed(dmClickRetryRunnable, 480L)
                           return
                       }
                   }
@@ -1035,7 +1125,7 @@ jobs:
               private fun triggerBackAction(now: Long) {
                   if (now - lastBlockActionAtMs < ACTION_COOLDOWN_MS) return
                   lastBlockActionAtMs = now
-                  lastAllowedContentTapAtMs = 0L
+                  lastAllowedDmReelTapAtMs = 0L
                   performGlobalAction(GLOBAL_ACTION_BACK)
               }
 
@@ -1078,23 +1168,16 @@ jobs:
                   return false
               }
 
-              /**
-               * Accurately distinguishes the full-screen Reel player (ClipsViewer) from an inline Reel
-               * on the Home feed by checking both ClipsViewer pager IDs and verifying that the Home feed
-               * top action bar / Stories tray is hidden.
-               */
               private fun isFullscreenClipsViewerVisible(root: AccessibilityNodeInfo, screenHeight: Int): Boolean {
                   val rect = Rect()
                   val minFullscreenHeight = (screenHeight * 0.70).toInt()
 
-                  // Check primary ClipsViewer pager & overlay IDs
                   for (id in CLIPS_VIEWER_IDS) {
                       val nodes = root.findAccessibilityNodeInfosByViewId(id) ?: continue
                       for (node in nodes) {
                           if (!node.isVisibleToUser) continue
                           node.getBoundsInScreen(rect)
                           if (id == "com.instagram.android:id/clips_video_container") {
-                              // For clips_video_container, ensure the Home feed top bar is NOT visible
                               if (rect.height() >= minFullscreenHeight &&
                                   !hasAnyVisibleNode(root, HOME_FEED_TOP_INDICATORS)
                               ) {
@@ -1150,6 +1233,7 @@ jobs:
               }
 
               override fun onInterrupt() {
+                  hideExploreBlackoutOverlay()
                   resetSingleReelSession()
                   pendingClickDmInbox = false
                   mainHandler.removeCallbacks(dmClickRetryRunnable)
@@ -1157,6 +1241,7 @@ jobs:
 
               override fun onDestroy() {
                   isServiceCurrentlyRunning = false
+                  hideExploreBlackoutOverlay()
                   resetSingleReelSession()
                   pendingClickDmInbox = false
                   mainHandler.removeCallbacksAndMessages(null)
@@ -1168,8 +1253,8 @@ jobs:
           cd /tmp/InstaReelGuard
           gradle assembleRelease --no-daemon
 
-      - name: Upload Ready-to-Install v2.0 APK
+      - name: Upload Ready-to-Install v3.0 APK
         uses: actions/upload-artifact@v4
         with:
-          name: InstaReelGuard-v2-APK
+          name: InstaReelGuard-v3-Locked-APK
           path: /tmp/InstaReelGuard/app/build/outputs/apk/release/app-release.apk
